@@ -10,11 +10,15 @@
  ****************************************************************************/
 
 #include <ArborX_BoostRTreeHelpers.hpp>
+#include <ArborX_BruteForce.hpp>
 #include <ArborX_LinearBVH.hpp>
 #include <ArborX_Version.hpp>
 
 #include <Kokkos_Core.hpp>
 
+#include <boost/mpl/copy.hpp>
+#include <boost/mpl/front_inserter.hpp>
+#include <boost/mpl/list.hpp>
 #include <boost/program_options.hpp>
 
 #include <chrono>
@@ -346,14 +350,35 @@ int main(int argc, char *argv[])
   int source_point_cloud_type = to_point_cloud_enum.at(source_pt_cloud);
   int target_point_cloud_type = to_point_cloud_enum.at(target_pt_cloud);
 
+  {
+    using A = std::tuple<int, float>;
+    using B = std::tuple<double, bool, char>;
+    using C = decltype(std::tuple_cat(A{}, B{}));
+    static_assert(
+        std::is_same<C, std::tuple<int, float, double, bool, char>>::value,
+        "nope");
+  }
+  {
+    using A = boost::mpl::list<int, float>;
+    using B = boost::mpl::list<double, bool, char>;
+    using C = boost::mpl::copy<A, boost::mpl::front_inserter<B>>::type;
+    //    static_assert(
+    //        std::is_same<C,
+    //                     boost::mpl::list<float, int, double, bool,
+    //                     char>>::value,
+    //        "nope");
+  }
+
 #ifdef KOKKOS_ENABLE_SERIAL
   using Serial = Kokkos::Serial::device_type;
   REGISTER_BENCHMARK(ArborX::BVH<Serial>);
+  REGISTER_BENCHMARK(ArborX::BruteForce<Serial>);
 #endif
 
 #ifdef KOKKOS_ENABLE_OPENMP
   using OpenMP = Kokkos::OpenMP::device_type;
   REGISTER_BENCHMARK(ArborX::BVH<OpenMP>);
+  REGISTER_BENCHMARK(ArborX::BruteForce<OpenMP>);
 #endif
 
 #ifdef KOKKOS_ENABLE_CUDA

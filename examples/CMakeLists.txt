@@ -13,3 +13,5 @@ if(Boost_FOUND)
   add_subdirectory(viz)
 endif()
 add_subdirectory(access_traits)
+
+add_subdirectory(brute_force)

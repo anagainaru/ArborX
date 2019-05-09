@@ -12,6 +12,7 @@
 #include "ArborX_BoostRTreeHelpers.hpp"
 #include "ArborX_EnableDeviceTypes.hpp" // ARBORX_DEVICE_TYPES
 #include "ArborX_EnableViewComparison.hpp"
+//#include <ArborX_BruteForce.hpp>
 #include <ArborX_LinearBVH.hpp>
 
 #include <boost/test/unit_test.hpp>
@@ -33,6 +34,7 @@ struct TreeTypeTraits;
 template <typename... DeviceTypes>
 struct TreeTypeTraits<std::tuple<DeviceTypes...>>
 {
+  // using type = std::tuple<ArborX::BruteForce<DeviceTypes>...>;
   using type = std::tuple<ArborX::BVH<DeviceTypes>...>;
 };
 
@@ -1058,8 +1060,10 @@ std::vector<std::array<double, 3>> make_random_cloud(double Lx, double Ly,
   return cloud;
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(boost_rtree, DeviceType, ARBORX_DEVICE_TYPES)
+BOOST_AUTO_TEST_CASE_TEMPLATE(boost_rtree, Tree, TreeTypes)
 {
+  using DeviceType = typename Tree::device_type;
+
   // construct a cloud of points (nodes of a structured grid)
   double Lx = 10.0;
   double Ly = 10.0;
@@ -1084,7 +1088,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(boost_rtree, DeviceType, ARBORX_DEVICE_TYPES)
 
   Kokkos::deep_copy(bounding_boxes, bounding_boxes_host);
 
-  ArborX::BVH<DeviceType> bvh(bounding_boxes);
+  Tree bvh(bounding_boxes);
 
   auto rtree = BoostRTreeHelpers::makeRTree(bounding_boxes_host);
 
@@ -1166,14 +1170,14 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(boost_rtree, DeviceType, ARBORX_DEVICE_TYPES)
 
   validateResults(rtree_results, bvh_results);
 
-  bvh.query(nearest_queries, indices_nearest, offset_nearest,
-            ArborX::Experimental::TraversalPolicy().setTraversalAlgorithm(
-                ArborX::Details::NearestQueryAlgorithm::
-                    PriorityQueueBased_Deprecated));
-  Kokkos::deep_copy(offset_nearest_host, offset_nearest);
-  Kokkos::deep_copy(indices_nearest_host, indices_nearest);
-  bvh_results = std::make_tuple(offset_nearest_host, indices_nearest_host);
-  validateResults(rtree_results, bvh_results);
+  // bvh.query(nearest_queries, indices_nearest, offset_nearest,
+  //          ArborX::Experimental::TraversalPolicy().setTraversalAlgorithm(
+  //              ArborX::Details::NearestQueryAlgorithm::
+  //                  PriorityQueueBased_Deprecated));
+  // Kokkos::deep_copy(offset_nearest_host, offset_nearest);
+  // Kokkos::deep_copy(indices_nearest_host, indices_nearest);
+  // bvh_results = std::make_tuple(offset_nearest_host, indices_nearest_host);
+  // validateResults(rtree_results, bvh_results);
 
   Kokkos::View<int *, DeviceType> offset_within("offset_within", 0);
   Kokkos::View<int *, DeviceType> indices_within("indices_within", 0);

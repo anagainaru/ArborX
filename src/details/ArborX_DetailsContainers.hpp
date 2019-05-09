@@ -73,6 +73,7 @@ class UnmanagedStaticVector
     using const_reference = value_type const &;
     using pointer = value_type *;
     using const_pointer = value_type const *;
+    KOKKOS_FUNCTION UnmanagedStaticVector() { assert(false); }
     KOKKOS_FUNCTION UnmanagedStaticVector( pointer ptr, size_type max_size ) : _ptr(ptr) , _max_size(max_size) { assert(ptr != nullptr); }
     KOKKOS_INLINE_FUNCTION bool empty() const { return _size == 0; }
     KOKKOS_INLINE_FUNCTION size_type size() const { return _size; }
@@ -95,7 +96,7 @@ class UnmanagedStaticVector
 
   private:
     pointer _ptr = nullptr;
-    size_type const _max_size = 0;
+    size_type _max_size = 0;
     size_type _size = 0;
   // clang-format on
 };
