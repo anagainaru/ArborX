@@ -13289,20 +13289,166 @@ a.anchor-link {
 
 </div>
 </div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="The-Message-Passing-Model">The Message-Passing Model<a class="anchor-link" href="#The-Message-Passing-Model">&#182;</a></h1><ul>
+<li>A process is (traditionally) a program counter and address space.</li>
+<li>Processes may have multiple threads (program counters and associated stacks) sharing a single address space. <code>MPI is for communication among processes, which have separate address spaces</code><ul>
+<li>MPI processes may have multiple threads</li>
+</ul>
+</li>
+<li>Interprocess communication consists of<ul>
+<li>Synchronization</li>
+<li>Movement of data from one process’s address space to another’s. </li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
 </div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Programming-With-MPI">Programming With MPI<a class="anchor-link" href="#Programming-With-MPI">&#182;</a></h1><ul>
+<li><p>MPI is a library</p>
+<ul>
+<li>All operations are performed with routine calls</li>
+<li>Basic definitions in<ul>
+<li>mpi.h for C</li>
+<li>MPI or MPI_F08 module for Fortran</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>MPI for Python</p>
+<ul>
+<li>mpi4py module using <code>pickle</code> under the hood<ul>
+<li>implements binary protocols for serializing and de-serializing a Python object structure</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">some</span> <span class="n">code</span> <span class="nb">super</span> <span class="n">cool</span><span class="p">:</span>
-    <span class="n">aaa</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">mpi4py</span> <span class="k">import</span> <span class="n">MPI</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello world&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><code>mpiexec -n 4 python script.py</code></p>
+
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="MPI-Environment">MPI Environment<a class="anchor-link" href="#MPI-Environment">&#182;</a></h1><ul>
+<li>Two important questions that arise early in a parallel program are:<ul>
+<li>How many processes are participating in this computation?</li>
+<li>Which one am I?</li>
+</ul>
+</li>
+<li>MPI provides functions to answer these questions:<ul>
+<li>MPI_Comm_size reports the number of processes.</li>
+<li>MPI_Comm_rank reports the rank, a number between 0 and size-1, identifying the calling process</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#include “mpi.h”</span>
+<span class="nb">int</span> <span class="n">main</span><span class="p">(</span><span class="nb">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+ <span class="nb">int</span> <span class="n">rank</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">provided</span>
+ <span class="nb">float</span> <span class="n">A</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+ <span class="n">MPI_Init_thread</span><span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">argv</span><span class="p">,</span> <span class="n">MPI_THREAD_SINGLE</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">provided</span><span class="p">);</span>
+    
+ <span class="n">MPI_Comm_size</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">size</span><span class="p">);</span>
+ <span class="n">MPI_Comm_rank</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rank</span><span class="p">);</span>
+ 
+ <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+     <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">rank</span><span class="p">;</span>
+ 
+    <span class="n">printf</span><span class="p">(</span><span class="err">“</span><span class="n">My</span> <span class="n">rank</span> <span class="o">%</span><span class="k">d</span> of %d\n”, rank, size );
+ <span class="n">printf</span><span class="p">(</span><span class="err">“</span><span class="n">Here</span> <span class="n">are</span> <span class="n">my</span> <span class="n">values</span> <span class="k">for</span> <span class="n">A</span>\<span class="n">n</span><span class="err">”</span><span class="p">);</span>
+ <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">printf</span><span class="p">(</span><span class="err">“</span><span class="o">%</span><span class="k">f</span> “, A[i]);
+ <span class="n">printf</span><span class="p">(</span><span class="err">“</span>\<span class="n">n</span><span class="err">”</span><span class="p">);</span>
+ <span class="n">MPI_Finalize</span><span class="p">();</span>
+<span class="p">}</span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">mpi4py</span> <span class="k">import</span> <span class="n">MPI</span>
+
+<span class="n">comm</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span>
+<span class="n">rank</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span>
+<span class="n">size</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">Comm</span><span class="o">.</span><span class="n">Get_size</span><span class="p">()</span> 
+
+<span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">rank</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="err">“</span><span class="n">My</span> <span class="n">rank</span> <span class="o">%</span><span class="k">d</span> of %d” %(rank, size));
+<span class="nb">print</span><span class="p">(</span><span class="err">“</span><span class="n">Here</span> <span class="n">are</span> <span class="n">my</span> <span class="n">values</span> <span class="k">for</span> <span class="n">A</span><span class="p">:</span> <span class="o">%</span><span class="k">s</span>” %(A));
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Main-MPI-characteristics">Main MPI characteristics<a class="anchor-link" href="#Main-MPI-characteristics">&#182;</a></h1><p>All MPI programs begin with MPI_Init_thread and end with MPI_Finalize</p>
+<ul>
+<li>MPI_COMM_WORLD is defined by mpi.h (in C) or the MPI module and designates all processes in the MPI “job”</li>
+<li>Each statement executes independently in each process<ul>
+<li>including the print and printf statements</li>
+</ul>
+</li>
+<li>I/O to standard output not part of MPI<ul>
+<li>output order undefined (may be interleaved by character, line, or blocks of characters) </li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
 </div></section></section>
 </div>
 </div>
