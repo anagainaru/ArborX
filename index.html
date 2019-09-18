@@ -13312,6 +13312,15 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Programming-With-MPI">Programming With MPI<a class="anchor-link" href="#Programming-With-MPI">&#182;</a></h1><p>MPIch
+OpenMPI</p>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Programming-With-MPI">Programming With MPI<a class="anchor-link" href="#Programming-With-MPI">&#182;</a></h1><ul>
 <li><p>MPI is a library</p>
 <ul>
@@ -13396,10 +13405,10 @@ a.anchor-link {
  <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
      <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">rank</span><span class="p">;</span>
  
-    <span class="n">printf</span><span class="p">(</span><span class="err">“</span><span class="n">My</span> <span class="n">rank</span> <span class="o">%</span><span class="k">d</span> of %d\n”, rank, size );
- <span class="n">printf</span><span class="p">(</span><span class="err">“</span><span class="n">Here</span> <span class="n">are</span> <span class="n">my</span> <span class="n">values</span> <span class="k">for</span> <span class="n">A</span>\<span class="n">n</span><span class="err">”</span><span class="p">);</span>
- <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">printf</span><span class="p">(</span><span class="err">“</span><span class="o">%</span><span class="k">f</span> “, A[i]);
- <span class="n">printf</span><span class="p">(</span><span class="err">“</span>\<span class="n">n</span><span class="err">”</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;My rank </span><span class="si">%d</span><span class="s2"> of </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">size</span> <span class="p">);</span>
+ <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;Here are my values for A</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+ <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%f</span><span class="s2"> &quot;</span><span class="p">,</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+ <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
  <span class="n">MPI_Finalize</span><span class="p">();</span>
 <span class="p">}</span> 
 </pre></div>
@@ -13422,15 +13431,15 @@ a.anchor-link {
 
 <span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">rank</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="err">“</span><span class="n">My</span> <span class="n">rank</span> <span class="o">%</span><span class="k">d</span> of %d” %(rank, size));
-<span class="nb">print</span><span class="p">(</span><span class="err">“</span><span class="n">Here</span> <span class="n">are</span> <span class="n">my</span> <span class="n">values</span> <span class="k">for</span> <span class="n">A</span><span class="p">:</span> <span class="o">%</span><span class="k">s</span>” %(A));
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;My rank </span><span class="si">%d</span><span class="s2"> of </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">size</span><span class="p">));</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Here are my values for A: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">A</span><span class="p">));</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-</div></section></section><section><section>
+</div></section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -13446,6 +13455,36 @@ a.anchor-link {
 </ul>
 </li>
 </ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="MPI_Init_thread">MPI_Init_thread<a class="anchor-link" href="#MPI_Init_thread">&#182;</a></h1><p>MPI-2 adds MPI_Init_thread so that
+programmer can request the level of thread
+safety required for the program</p>
+<ul>
+<li>MPI_THREAD_SINGLE gives the same behavior as MPI_Init (one thread will execute)</li>
+<li>MPI_THREAD_FUNNELED The process may be multi-threaded, but only the main thread will make MPI calls (all MPI calls are funneled to the main thread)</li>
+<li>MPI_THREAD_SERIALIZED The process may be multi-threaded, and multiple threads may make MPI calls, but only one at a time: MPI calls are not made concurrently from two distinct threads (all MPI calls are serialized)</li>
+<li><p>MPI_THREAD_MULTIPLE Multiple threads may call MPI, with no restrictions.</p>
+</li>
+<li><p>New programs should use MPI_Init_thread, and if more thread safety required, check on that (the provide arg).</p>
+<ul>
+<li>Needed to use OpenMP with MPI </li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="MPI-Basic-Send/Receive">MPI Basic Send/Receive<a class="anchor-link" href="#MPI-Basic-Send/Receive">&#182;</a></h1><p><img src="figures/send_recv.png" alt="Send Receive"></p>
 
 </div>
 </div>
