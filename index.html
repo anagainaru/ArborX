@@ -13242,13 +13242,27 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="MPI-Basics">MPI Basics<a class="anchor-link" href="#MPI-Basics">&#182;</a></h1><ul>
-<li>My name is</li>
-<li>Ana</li>
-<li>I like:<ul>
-<li>computers</li>
-<li>they are</li>
-<li>very smarts</li>
+<h1 id="MPI">MPI<a class="anchor-link" href="#MPI">&#182;</a></h1>
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Parallel-programming">Parallel programming<a class="anchor-link" href="#Parallel-programming">&#182;</a></h1><ul>
+<li><p>Implicit Parallelism</p>
+<ul>
+<li>Parallelizing Compilers</li>
+</ul>
+</li>
+<li><p>Explicit Parallelism</p>
+<ul>
+<li>Data Parallel</li>
+<li>Message Passing<ul>
+<li>MPI (Message Passing Interface)</li>
+</ul>
+</li>
+<li>Shared mmory</li>
 </ul>
 </li>
 </ul>
@@ -13557,7 +13571,19 @@ count, datatype).</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="4.-What-will-it-mean-for-these-operations-to-complete?">4. What will it mean for these operations to complete?<a class="anchor-link" href="#4.-What-will-it-mean-for-these-operations-to-complete?">&#182;</a></h1><p>Blocking/Non-blocking</p>
+<h1 id="4.-What-will-it-mean-for-these-operations-to-complete?">4. What will it mean for these operations to complete?<a class="anchor-link" href="#4.-What-will-it-mean-for-these-operations-to-complete?">&#182;</a></h1><p><strong>Blocking / Non-blocking</strong></p>
+<ul>
+<li>The message-passing approach makes the exchange of data cooperative.</li>
+<li>Data is explicitly sent by one process and received by another.</li>
+<li>An advantage is that any change in the receiving process’s memory is made with the receiver’s explicit participation.</li>
+<li>Communication and synchronization are combined.</li>
+</ul>
+<p><strong>One sided communication</strong></p>
+<ul>
+<li>One-sided operations between processes include remote memory reads and writes</li>
+<li>Only one process needs to explicitly participate.</li>
+<li>An advantage is that communication and synchronization are decoupled </li>
+</ul>
 
 </div>
 </div>
@@ -13593,9 +13619,10 @@ count, datatype).</p>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Basic-Send/Receive-Take-away">Basic Send/Receive Take-away<a class="anchor-link" href="#Basic-Send/Receive-Take-away">&#182;</a></h1><p><img src="figures/send_recv_proc.png" alt="Send Receive"></p>
-<p>MPI_Send(sdata, 10, MPI_DOUBLE, 1, …)</p>
 
-<pre><code>                        MPI_Recv(rdata, 10, MPI_DOUBLE, 0, … )  </code></pre>
+<pre><code>MPI_Send(sdata, 10, MPI_DOUBLE, 1, …)
+
+                        MPI_Recv(rdata, 10, MPI_DOUBLE, 0, … )  </code></pre>
 
 </div>
 </div>
@@ -13708,20 +13735,117 @@ abort.</p>
 
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Timing-MPI-Programs">Timing MPI Programs<a class="anchor-link" href="#Timing-MPI-Programs">&#182;</a></h1><ul>
+<li>The elapsed (wall-clock) time between two points in an MPI program can be computed using MPI_Wtime:</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="kt">double</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">;</span>
+ <span class="n">t1</span> <span class="o">=</span> <span class="n">MPI_Wtime</span><span class="p">();</span>
+ <span class="p">...</span>
+ <span class="n">t2</span> <span class="o">=</span> <span class="n">MPI_Wtime</span><span class="p">();</span>
+ <span class="n">printf</span><span class="p">(</span> <span class="err">“</span><span class="n">time</span> <span class="n">is</span> <span class="o">%</span><span class="n">d</span><span class="err">\</span><span class="n">n</span><span class="err">”</span><span class="p">,</span> <span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span> <span class="p">);</span>
 </pre></div>
+<ul>
+<li>The value returned by a single call to MPI_Wtime has little value.</li>
+<li>The resolution of the timer is returned by MPI_Wtick</li>
+<li>Times in general are local, but an implementation might offer synchronized times.<ul>
+<li>For advanced users: see the MPI attribute MPI_WTIME_IS_GLOBAL. </li>
+</ul>
+</li>
+</ul>
 
-    </div>
 </div>
 </div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Avoiding-the-buffers">Avoiding the buffers<a class="anchor-link" href="#Avoiding-the-buffers">&#182;</a></h1><p>(update figure)
+<img src="figures/send_recv_proc.png" alt="Send Receive"></p>
+<p>This requires that MPI_Send wait on delivery, or
+that MPI_Recv return before transfer is complete,
+and we wait later.</p>
 
-</div></div></section></section>
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Blocking-communication">Blocking communication<a class="anchor-link" href="#Blocking-communication">&#182;</a></h1><ul>
+<li>Send a large message from process 0 to process 1<ul>
+<li>If there is insufficient storage at the destination, the send must wait for the user to provide the memory space (through a receive)</li>
+</ul>
+</li>
+<li>What happens with this code?</li>
+</ul>
+<p>Process 0 ---- Process 1</p>
+<p>Send(1) ------ Send(0)</p>
+<p>Recv(1) ------  Recv(0)</p>
+<ul>
+<li>This is called “unsafe” because it depends on the availability of system buffers </li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Deadlock-solution">Deadlock solution<a class="anchor-link" href="#Deadlock-solution">&#182;</a></h1><ul>
+<li>Order the operations more carefully</li>
+<li>Supply receive buffer at same time as send (MPI_Sendrecv)</li>
+<li>Supply own buffer space (MPI_Bsend)</li>
+<li>Use non-blocking operations<ul>
+<li>Safe, but</li>
+<li>not necessarily asynchronous</li>
+<li>not necessarily concurrent</li>
+<li>not necessarily faster </li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="MPI-Non-blocking-operations">MPI Non-blocking operations<a class="anchor-link" href="#MPI-Non-blocking-operations">&#182;</a></h1><ul>
+<li>return (immediately) “request handles” that can be tested and waited on. </li>
+<li>MPI_Request request;</li>
+</ul>
+<p><code>MPI_Isend(start, count, datatype, dest, tag, comm, &amp;request);</code></p>
+<p><code>MPI_Irecv(start, count, datatype, dest, tag, comm, &amp;request);</code></p>
+<p><code>MPI_Wait(&amp;request, &amp;status);</code></p>
+<ul>
+<li>One can also test without waiting:</li>
+</ul>
+<p><code>MPI_Test(&amp;request, &amp;flag, &amp;status);</code></p>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Multiple-Completions">Multiple Completions<a class="anchor-link" href="#Multiple-Completions">&#182;</a></h1><ul>
+<li>It is sometimes desirable to wait on multiple requests:</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">MPI_Waitall</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">array_of_requests</span><span class="p">,</span> <span class="n">array_of_statuses</span><span class="p">);</span>
+<span class="n">MPI_Waitany</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">array_of_requests</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">index</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">status</span><span class="p">);</span>
+<span class="n">MPI_Waitsome</span><span class="p">(</span><span class="n">incount</span><span class="p">,</span> <span class="n">array_of_requests</span><span class="p">,</span>  <span class="o">&amp;</span><span class="n">outcount</span><span class="p">,</span> <span class="n">array_of_indices</span><span class="p">,</span> <span class="n">array_of_statuses</span><span class="p">);</span>
+</pre></div>
+<ul>
+<li>There are corresponding versions of test for each of these.</li>
+</ul>
+
+</div>
+</div>
+</div></section></section>
 </div>
 </div>
 
