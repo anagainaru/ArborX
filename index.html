@@ -13488,6 +13488,105 @@ safety required for the program</p>
 
 </div>
 </div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ol>
+<li>How will “data” be described?</li>
+<li>How will processes be identified?</li>
+<li>How will the receiver recognize/screen messages?</li>
+<li>What will it mean for these operations to complete? </li>
+</ol>
+
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="1.-How-will-&#8220;data&#8221;-be-described?">1. How will &#8220;data&#8221; be described?<a class="anchor-link" href="#1.-How-will-&#8220;data&#8221;-be-described?">&#182;</a></h1><p>The message buffer is described by (start,
+count, datatype).</p>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="2.-How-will-the-process-be-identified">2. How will the process be identified<a class="anchor-link" href="#2.-How-will-the-process-be-identified">&#182;</a></h1><ul>
+<li>Processes can be collected into groups.</li>
+<li>Each message is sent in a context, and must be received in the same context.</li>
+</ul>
+<p><code>A group and context together form a communicator.</code></p>
+<ul>
+<li><p>A process is identified by its rank in the group associated with a communicator.</p>
+</li>
+<li><p>There is a default communicator whose group contains all initial processes, called MPI_COMM_WORLD</p>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="3.-How-will-the-receiver-recognize/screen-messages?">3. How will the receiver recognize/screen messages?<a class="anchor-link" href="#3.-How-will-the-receiver-recognize/screen-messages?">&#182;</a></h1><ul>
+<li><p>Messages are sent with an accompanying user-defined integer tag, to assist the receiving process in identifying the message.</p>
+<ul>
+<li>Messages can be screened at the receiving end by specifying a specific tag, or</li>
+<li>not screened by specifying MPI_ANY_TAG as the tag in a receive.</li>
+</ul>
+</li>
+<li><p>Some non-MPI message-passing systems have called tags “message types”. MPI calls them tags to avoid confusion with datatypes.</p>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="4.-What-will-it-mean-for-these-operations-to-complete?">4. What will it mean for these operations to complete?<a class="anchor-link" href="#4.-What-will-it-mean-for-these-operations-to-complete?">&#182;</a></h1><p>Blocking/Non-blocking</p>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="MPI-Basic-(Blocking)-Send">MPI Basic (Blocking) Send<a class="anchor-link" href="#MPI-Basic-(Blocking)-Send">&#182;</a></h1><p><code>MPI_SEND (start, count, datatype, dest, tag, comm)</code></p>
+<ul>
+<li>The message buffer is described by (start, count, datatype).</li>
+<li>The target process is specified by dest, which is the rank of the target process in the communicator specified by comm.</li>
+<li>When this function returns, the data has been delivered to the system and the buffer can be reused. The message may not have been received by the target process. </li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="MPI-Basic-(Blocking)-Receive">MPI Basic (Blocking) Receive<a class="anchor-link" href="#MPI-Basic-(Blocking)-Receive">&#182;</a></h1><p><code>MPI_RECV(start, count, datatype, source, tag, comm, status)</code></p>
+<ul>
+<li>Waits until a matching (on source and tag) message is received from the system, and the buffer can be used.</li>
+<li>source is rank in communicator specified by comm, or MPI_ANY_SOURCE.</li>
+<li>status contains further information</li>
+<li>Receiving fewer than count occurrences of datatype is OK, but receiving more is an error.</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Basic-Send/Receive-Take-away">Basic Send/Receive Take-away<a class="anchor-link" href="#Basic-Send/Receive-Take-away">&#182;</a></h1>
+</div>
+</div>
 </div></section></section>
 </div>
 </div>
