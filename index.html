@@ -13249,27 +13249,37 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Parallel-programming">Parallel programming<a class="anchor-link" href="#Parallel-programming">&#182;</a></h1><ul>
-<li><p>Implicit Parallelism</p>
-<ul>
-<li>Parallelizing Compilers</li>
-</ul>
-</li>
-<li><p>Explicit Parallelism</p>
-<ul>
-<li>Data Parallel</li>
-<li>Message Passing<ul>
-<li>MPI (Message Passing Interface)</li>
-</ul>
-</li>
-<li>Shared mmory</li>
-</ul>
-</li>
-</ul>
+<h1 id="Parallel-Programming">Parallel Programming<a class="anchor-link" href="#Parallel-Programming">&#182;</a></h1><p><img src="./figures/parallel_arch.png" alt="Architectures"></p>
 
 </div>
 </div>
-</div></section></section><section><section>
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Markdown</span> <span class="o">|</span> <span class="n">Less</span> <span class="o">|</span> <span class="n">Pretty</span>
+<span class="o">---</span> <span class="o">|</span> <span class="o">---</span> <span class="o">|</span> <span class="o">---</span>
+<span class="o">*</span><span class="n">Still</span><span class="o">*</span> <span class="o">|</span> <span class="err">`</span><span class="n">renders</span><span class="err">`</span> <span class="o">|</span> <span class="o">**</span><span class="n">nicely</span><span class="o">**</span>
+<span class="mi">1</span> <span class="o">|</span> <span class="mi">2</span> <span class="o">|</span> <span class="mi">3</span>
+
+<span class="n">Implicit</span> <span class="n">Parallelism</span>  <span class="o">|</span> <span class="n">Explicit</span> <span class="n">Parallelism</span>
+
+    <span class="o">-</span> <span class="n">Parallelizing</span> <span class="n">Compilers</span>
+
+<span class="o">-</span> 
+    <span class="o">-</span> <span class="n">Data</span> <span class="n">Parallel</span>
+    <span class="o">-</span> <span class="n">Message</span> <span class="n">Passing</span>
+         <span class="o">-</span> <span class="o">**</span><span class="n">MPI</span> <span class="p">(</span><span class="n">Message</span> <span class="n">Passing</span> <span class="n">Interface</span><span class="p">)</span><span class="o">**</span>
+    <span class="o">-</span> <span class="n">Task</span> <span class="n">parallel</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></div></section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -13277,9 +13287,9 @@ a.anchor-link {
 <li>Data Parallel - the same instructions are carried out simultaneously on multiple data items <code>SIMD</code></li>
 <li><p>Task Parallel - different instructions on different data <code>MIMD</code></p>
 </li>
-<li><p>SPMD (single program, multiple data) not synchronized at individual operation level</p>
+<li><p><code>SPMD</code> (single program, multiple data) not synchronized at individual operation level
+   -SPMD is equivalent to MIMD since each MIMD program can be made od SPMD</p>
 </li>
-<li>SPMD is equivalent to MIMD since each MIMD program can be made SPMD (similarly for SIMD, but not in practical sense.)</li>
 </ul>
 <h3 id="Message-passing-(and-MPI)-is-for-MIMD/SPMD-parallelism.">Message passing (and MPI) is for MIMD/SPMD parallelism.<a class="anchor-link" href="#Message-passing-(and-MPI)-is-for-MIMD/SPMD-parallelism.">&#182;</a></h3>
 </div>
@@ -13288,18 +13298,19 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Multi-node-programs">Multi-node programs<a class="anchor-link" href="#Multi-node-programs">&#182;</a></h1><ul>
-<li><p>consist of separate processes, each with its own address space
-<code>Programmer manages memory by placing data in a particular process</code></p>
-</li>
-<li><p>Data sent explicitly between processes 
-<code>Programmer manages memory motion</code></p>
-</li>
-<li><p>Collective operations 
-<code>Programmer selects subset of processes</code>
-<code>Algorithm defined by the programming language</code></p>
-</li>
+<h1 id="Message-Passing-Programs">Message Passing Programs<a class="anchor-link" href="#Message-Passing-Programs">&#182;</a></h1><ul>
+<li>Consist of separate processes, each with its own address space</li>
 </ul>
+<p><code>Programmer manages memory by placing data in a particular process</code></p>
+<ul>
+<li>Data sent explicitly between processes </li>
+</ul>
+<p><code>Programmer manages memory motion</code></p>
+<ul>
+<li>Collective operations </li>
+</ul>
+<p><code>Programmer selects subset of processes</code></p>
+<p><code>Algorithm defined by the programming language</code></p>
 
 </div>
 </div>
@@ -13307,7 +13318,7 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="The-Message-Passing-Model">The Message-Passing Model<a class="anchor-link" href="#The-Message-Passing-Model">&#182;</a></h1><ul>
+<h1 id="The-Message-Passing-Model">The Message Passing Model<a class="anchor-link" href="#The-Message-Passing-Model">&#182;</a></h1><ul>
 <li>A process is (traditionally) a program counter and address space.</li>
 <li>Processes may have multiple threads (program counters and associated stacks) sharing a single address space. <code>MPI is for communication among processes, which have separate address spaces</code><ul>
 <li>MPI processes may have multiple threads</li>
