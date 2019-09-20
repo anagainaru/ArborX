@@ -14018,11 +14018,23 @@ World rank/size: 3/4     New rank/size: 1/2</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Avoiding-the-buffers">Avoiding the buffers<a class="anchor-link" href="#Avoiding-the-buffers">&#182;</a></h1><p>(update figure)
-<img src="figures/send_recv_proc.png" alt="Send Receive"></p>
-<p>This requires that MPI_Send wait on delivery, or
-that MPI_Recv return before transfer is complete,
-and we wait later.</p>
+<h1 id="Why-non-blocking-?">Why non blocking ?<a class="anchor-link" href="#Why-non-blocking-?">&#182;</a></h1><ul>
+<li><p>Overlapping communication and computation</p>
+<ul>
+<li>It can increase performance of some applications (not always)</li>
+</ul>
+</li>
+<li><p>Avoiding the buffers</p>
+</li>
+</ul>
+<p><img src="./figures/send_recv_proc.png" alt="Send Receive" width="400"/></p>
+<ul>
+<li>Non blocking communication<ul>
+<li>Requires that MPI_Send wait on delivery</li>
+<li>and/or that MPI_Recv return before transfer is complete, and we wait later.</li>
+</ul>
+</li>
+</ul>
 
 </div>
 </div>
