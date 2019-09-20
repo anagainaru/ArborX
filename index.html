@@ -13832,7 +13832,8 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 <span class="n">world_rank</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span>
 <span class="n">world_size</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">Get_size</span><span class="p">()</span>
 
-<span class="n">color</span> <span class="o">=</span> <span class="n">world_rank</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span> <span class="c1"># Determine color based on even/odd ranks</span>
+<span class="c1"># Determine color based on even/odd ranks</span>
+<span class="n">color</span> <span class="o">=</span> <span class="n">world_rank</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span> 
 
 <span class="c1"># Split the communicator based on the color and use the</span>
 <span class="c1"># original rank for ordering</span>
@@ -13841,8 +13842,8 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 <span class="n">new_rank</span> <span class="o">=</span> <span class="n">new_comm</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span>
 <span class="n">new_size</span> <span class="o">=</span> <span class="n">new_comm</span><span class="o">.</span><span class="n">Get_size</span><span class="p">()</span>
 
-<span class="n">printf</span><span class="p">(</span><span class="s2">&quot;World rank/size: </span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2"> </span><span class="se">\t</span><span class="s2"> New rank/size: </span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-	<span class="n">world_rank</span><span class="p">,</span> <span class="n">world_size</span><span class="p">,</span> <span class="n">row_rank</span><span class="p">,</span> <span class="n">row_size</span><span class="p">);</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;World rank/size: </span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2"> </span><span class="se">\t</span><span class="s2"> New rank/size: </span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span>
+            <span class="n">world_rank</span><span class="p">,</span> <span class="n">world_size</span><span class="p">,</span> <span class="n">row_rank</span><span class="p">,</span> <span class="n">row_size</span><span class="p">));</span>
 
 <span class="n">new_comm</span><span class="o">.</span><span class="n">Free</span><span class="p">()</span>
 </pre></div>
@@ -13867,19 +13868,82 @@ World rank/size: 3/4     New rank/size: 1/2</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="3.-How-will-the-receiver-recognize/screen-messages?">3. How will the receiver recognize/screen messages?<a class="anchor-link" href="#3.-How-will-the-receiver-recognize/screen-messages?">&#182;</a></h1><ul>
-<li><p>Messages are sent with an accompanying user-defined integer tag, to assist the receiving process in identifying the message.</p>
+<h1 id="3.-Recognize-messages-sent-to-you-by-other-processes">3. Recognize messages sent to you by other processes<a class="anchor-link" href="#3.-Recognize-messages-sent-to-you-by-other-processes">&#182;</a></h1><ul>
+<li><p>Messages are sent with an accompanying user-defined integer tag</p>
 <ul>
+<li>Used to assist the receiving process in identifying the message.</li>
 <li>Messages can be screened at the receiving end by specifying a specific tag, or</li>
 <li>not screened by specifying MPI_ANY_TAG as the tag in a receive.</li>
 </ul>
 </li>
-<li><p>Some non-MPI message-passing systems have called tags “message types”. MPI calls them tags to avoid confusion with datatypes.</p>
+<li><p>Some non-MPI message-passing systems have called tags “message types”.</p>
+<ul>
+<li>MPI calls them tags to avoid confusion with datatypes. </li>
+</ul>
 </li>
 </ul>
 
 </div>
 </div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">mpi4py</span> <span class="k">import</span> <span class="n">MPI</span>
+
+<span class="n">comm</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span>
+<span class="n">rank</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">sdata</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mf">3.14</span><span class="p">}</span>
+    <span class="n">comm</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">sdata</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">rdata</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">rdata</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">mpi4py</span> <span class="k">import</span> <span class="n">MPI</span>
+
+<span class="n">comm</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span>
+<span class="n">rank</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">sdata</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mf">3.14</span><span class="p">}</span>
+    <span class="n">comm</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">sdata</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">rdata</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">rdata</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 </div></section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -13939,29 +14003,6 @@ World rank/size: 3/4     New rank/size: 1/2</code></pre>
 
 </div>
 </div>
-</div></section><section>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">mpi4py</span> <span class="k">import</span> <span class="n">MPI</span>
-
-<span class="n">comm</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span>
-<span class="n">rank</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span>
-
-<span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="n">sdata</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mf">3.14</span><span class="p">}</span>
-    <span class="n">comm</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
-<span class="k">elif</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-    <span class="n">rdata</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">rdata</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
 </div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
