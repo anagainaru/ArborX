@@ -13332,15 +13332,14 @@ a.anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="The-Message-Passing-Model">The Message Passing Model<a class="anchor-link" href="#The-Message-Passing-Model">&#182;</a></h1><ul>
-<li>A process is<ul>
+<li><p>A process is</p>
+<ul>
 <li>a program counter </li>
 <li>address space</li>
 </ul>
 </li>
-</ul>
-<p>&nbsp;</p>
-<ul>
-<li>Processes may have multiple threads (program counters and associated stacks) sharing a single address space.</li>
+<li><p>Processes may have multiple threads (program counters and associated stacks) sharing a single address space.</p>
+</li>
 </ul>
 <p><code>MPI is for communication among processes, which have separate address spaces</code></p>
 <ul>
@@ -13439,13 +13438,23 @@ Hello world<br/></p>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="MPI-Environment">MPI Environment<a class="anchor-link" href="#MPI-Environment">&#182;</a></h1><ul>
-<li>Two important questions that arise early in a parallel program are:<ul>
-<li>How many processes are participating in this computation?</li>
-<li>Which one am I?</li>
+<li><p>Two important issues</p>
+<ul>
+<li>Initializing all MPI’s global and internal variables<ul>
+<li>e.g. Global communicator that allows all processors to communicate</li>
 </ul>
 </li>
-<li>MPI provides functions to answer these questions:<ul>
-<li>MPI_Comm_size reports the number of processes.</li>
+<li>Giving processes enough information to communicate with each other<ul>
+<li>Number of total processes participating in this computation</li>
+<li>Which process am I from all processes</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>MPI provides functions for all issues:</p>
+<ul>
+<li>MPI_Initialize/MPI_Finalize</li>
+<li>MPI_Comm_size reports the number of processes</li>
 <li>MPI_Comm_rank reports the rank, a number between 0 and size-1, identifying the calling process</li>
 </ul>
 </li>
@@ -13454,36 +13463,32 @@ Hello world<br/></p>
 </div>
 </div>
 </div></section><section>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#include “mpi.h”</span>
-<span class="nb">int</span> <span class="n">main</span><span class="p">(</span><span class="nb">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">“mpi.h”</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
 <span class="p">{</span>
- <span class="nb">int</span> <span class="n">rank</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">provided</span>
- <span class="nb">float</span> <span class="n">A</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+ <span class="kt">int</span> <span class="n">rank</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">provided</span>
+ <span class="kt">float</span> <span class="n">A</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
  <span class="n">MPI_Init_thread</span><span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">argv</span><span class="p">,</span> <span class="n">MPI_THREAD_SINGLE</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">provided</span><span class="p">);</span>
-    
+
  <span class="n">MPI_Comm_size</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">size</span><span class="p">);</span>
  <span class="n">MPI_Comm_rank</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rank</span><span class="p">);</span>
- 
+
  <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
      <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">rank</span><span class="p">;</span>
- 
-    <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;My rank </span><span class="si">%d</span><span class="s2"> of </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">size</span> <span class="p">);</span>
- <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;Here are my values for A</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
- <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%f</span><span class="s2"> &quot;</span><span class="p">,</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
- <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;My rank %d of %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">size</span> <span class="p">);</span>
+ <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Here are my values for A</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+ <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%f &quot;</span><span class="p">,</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+ <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
  <span class="n">MPI_Finalize</span><span class="p">();</span>
-<span class="p">}</span> 
+<span class="p">}</span>
 </pre></div>
 
-    </div>
 </div>
 </div>
-
 </div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -13496,7 +13501,7 @@ Hello world<br/></p>
 <span class="n">rank</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span>
 <span class="n">size</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">Comm</span><span class="o">.</span><span class="n">Get_size</span><span class="p">()</span> 
 
-<span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">rank</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">rank</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;My rank </span><span class="si">%d</span><span class="s2"> of </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">size</span><span class="p">));</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Here are my values for A: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">A</span><span class="p">));</span>
@@ -13506,6 +13511,22 @@ Hello world<br/></p>
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+<pre><code>My rank 0 of 4
+Here are my values for A: [0, 0, 0, 0, 0]
+My rank 1 of 4
+Here are my values for A: [0, 1, 2, 3, 4]
+My rank 2 of 4
+Here are my values for A: [0, 2, 4, 6, 8]
+My rank 3 of 4
+Here are my values for A: [0, 3, 6, 9, 12]</code></pre>
+
+</div>
+</div>
 </div></section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
