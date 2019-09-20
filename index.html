@@ -13297,39 +13297,33 @@ a.anchor-link {
 </ul>
 </li>
 </ul>
-<h3 id="Message-passing-(and-MPI)-is-for-MIMD/SPMD-parallelism.">Message passing (and MPI) is for MIMD/SPMD parallelism.<a class="anchor-link" href="#Message-passing-(and-MPI)-is-for-MIMD/SPMD-parallelism.">&#182;</a></h3>
+<h3 id="Message-passing-(MPI)-is-for-MIMD/SPMD-parallelism.">Message passing (MPI) is for MIMD/SPMD parallelism.<a class="anchor-link" href="#Message-passing-(MPI)-is-for-MIMD/SPMD-parallelism.">&#182;</a></h3>
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
 </div></div></section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Message-Passing-Programs">Message Passing Programs<a class="anchor-link" href="#Message-Passing-Programs">&#182;</a></h1><ul>
-<li>Consist of separate processes, each with its own address space</li>
-</ul>
-<p><code>Programmer manages memory by placing data in a particular process</code></p>
+<h1 id="The-Message-Passing-Model">The Message Passing Model<a class="anchor-link" href="#The-Message-Passing-Model">&#182;</a></h1><ul>
+<li><p>Consist of separate processes, each with its own address space</p>
 <ul>
-<li>Data sent explicitly between processes </li>
+<li><code>Programmer manages memory by placing data in a particular process</code></li>
 </ul>
-<p><code>Programmer manages memory motion</code></p>
+</li>
+<li><p>Data is sent explicitly between processes</p>
 <ul>
-<li>Collective operations </li>
+<li><code>Programmer manages memory motion</code></li>
 </ul>
-<p><code>Programmer selects subset of processes</code></p>
-<p><code>Algorithm defined by the programming language</code></p>
+</li>
+<li><p>Multi-process communication (Collective operations)</p>
+<ul>
+<li><p><code>Programmer selects subset of processes</code></p>
+</li>
+<li><p><em>Algorithm (performance) defined by the programming language</em></p>
+</li>
+</ul>
+</li>
+</ul>
 
 </div>
 </div>
@@ -13338,7 +13332,14 @@ a.anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="The-Message-Passing-Model">The Message Passing Model<a class="anchor-link" href="#The-Message-Passing-Model">&#182;</a></h1><ul>
-<li>A process is (traditionally) a program counter and address space.</li>
+<li>A process is<ul>
+<li>a program counter </li>
+<li>address space</li>
+</ul>
+</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
 <li>Processes may have multiple threads (program counters and associated stacks) sharing a single address space.</li>
 </ul>
 <p><code>MPI is for communication among processes, which have separate address spaces</code></p>
@@ -13356,8 +13357,7 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Programming-With-MPI">Programming With MPI<a class="anchor-link" href="#Programming-With-MPI">&#182;</a></h1><p>MPIch
-OpenMPI</p>
+<h1 id="Programming-With-MPI">Programming With MPI<a class="anchor-link" href="#Programming-With-MPI">&#182;</a></h1><p>MPICH / OpenMPI</p>
 
 </div>
 </div>
@@ -13366,18 +13366,30 @@ OpenMPI</p>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Programming-With-MPI">Programming With MPI<a class="anchor-link" href="#Programming-With-MPI">&#182;</a></h1><ul>
-<li><p>MPI is a library</p>
-<ul>
+<li>MPI is a library<ul>
 <li>All operations are performed with routine calls</li>
 <li>Basic definitions in<ul>
 <li>mpi.h for C</li>
 <li>MPI or MPI_F08 module for Fortran</li>
 </ul>
 </li>
+<li>Implementation<ul>
+<li>MPICH: high-quality reference implementation of the latest MPI standard</li>
+<li>OpenMPI: common case, both in terms of usage and network conduits</li>
 </ul>
 </li>
-<li><p>MPI for Python</p>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <ul>
+<li>MPI for Python<ul>
 <li>mpi4py module using <code>pickle</code> under the hood<ul>
 <li>implements binary protocols for serializing and de-serializing a Python object structure</li>
 </ul>
@@ -13388,7 +13400,7 @@ OpenMPI</p>
 
 </div>
 </div>
-</div></section><section>
+</div></div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
@@ -13408,6 +13420,17 @@ OpenMPI</p>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><code>mpiexec -n 4 python script.py</code></p>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Hello world
+Hello world
+Hello world
+Hello world</p>
 
 </div>
 </div>
@@ -13502,7 +13525,7 @@ OpenMPI</p>
 
 </div>
 </div>
-</div></section></section><section><section>
+</div></section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -13532,7 +13555,7 @@ safety required for the program</p>
 
 </div>
 </div>
-</div></section><section>
+</div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
