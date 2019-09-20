@@ -13399,6 +13399,16 @@ a.anchor-link {
 
 </div>
 </div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Launching MPI jobs</p>
+<div class="highlight"><pre><span></span>mpiexec –np <span class="si">${</span><span class="nv">RANKS</span><span class="si">}</span> python <span class="si">${</span><span class="nv">PATH_TO_SCRIPT</span><span class="si">}</span>
+</pre></div>
+
+</div>
+</div>
 </div></div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -13414,7 +13424,7 @@ a.anchor-link {
 </div>
 </div>
 
-</div><div class="fragment">
+</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -13422,7 +13432,7 @@ a.anchor-link {
 
 </div>
 </div>
-</div></div><div class="fragment">
+</div><div class="fragment">
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -13453,9 +13463,9 @@ Hello world<br/></p>
 </li>
 <li><p>MPI provides functions for all issues:</p>
 <ul>
-<li>MPI_Initialize/MPI_Finalize</li>
-<li>MPI_Comm_size reports the number of processes</li>
-<li>MPI_Comm_rank reports the rank, a number between 0 and size-1, identifying the calling process</li>
+<li><code>MPI_Initialize</code>/<code>MPI_Finalize</code></li>
+<li><code>MPI_Comm_size</code> reports the number of processes</li>
+<li><code>MPI_Comm_rank</code> reports the rank, a number between 0 and size-1, identifying the calling process</li>
 </ul>
 </li>
 </ul>
@@ -13504,41 +13514,47 @@ Hello world<br/></p>
 <span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">rank</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;My rank </span><span class="si">%d</span><span class="s2"> of </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">size</span><span class="p">));</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Here are my values for A: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">A</span><span class="p">));</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;My values for A: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">A</span><span class="p">));</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-</div>
+</div><div class="fragment">
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 
 <pre><code>My rank 0 of 4
-Here are my values for A: [0, 0, 0, 0, 0]
 My rank 1 of 4
-Here are my values for A: [0, 1, 2, 3, 4]
 My rank 2 of 4
-Here are my values for A: [0, 2, 4, 6, 8]
+My values for A: [0, 0, 0, 0, 0]
+My values for A: [0, 2, 4, 6, 8]
+My values for A: [0, 1, 2, 3, 4]
 My rank 3 of 4
-Here are my values for A: [0, 3, 6, 9, 12]</code></pre>
+My values for A: [0, 3, 6, 9, 12]</code></pre>
 
 </div>
 </div>
-</div></section><section>
+</div></div></section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Main-MPI-characteristics">Main MPI characteristics<a class="anchor-link" href="#Main-MPI-characteristics">&#182;</a></h1><p>All MPI programs begin with MPI_Init_thread and end with MPI_Finalize</p>
 <ul>
-<li>MPI_COMM_WORLD is defined by mpi.h (in C) or the MPI module and designates all processes in the MPI “job”</li>
-<li>Each statement executes independently in each process<ul>
-<li>including the print and printf statements</li>
+<li><code>MPI_COMM_WORLD</code> is defined by mpi.h (in C) or the MPI module<ul>
+<li>includes all processes in the MPI “job”</li>
 </ul>
 </li>
-<li>I/O to standard output not part of MPI<ul>
+<li>Each statement executes independently in each process<ul>
+<li>including the print/printf statements</li>
+</ul>
+</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li>I/O to standard output <strong>is not</strong> part of MPI<ul>
 <li>output order undefined (may be interleaved by character, line, or blocks of characters) </li>
 </ul>
 </li>
@@ -13550,20 +13566,25 @@ Here are my values for A: [0, 3, 6, 9, 12]</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="MPI_Init_thread">MPI_Init_thread<a class="anchor-link" href="#MPI_Init_thread">&#182;</a></h1><p>MPI-2 adds MPI_Init_thread so that
-programmer can request the level of thread
-safety required for the program</p>
+<h1 id="MPI-Initialization">MPI Initialization<a class="anchor-link" href="#MPI-Initialization">&#182;</a></h1><p>MPI_Init_thread is used since MPI-2</p>
 <ul>
-<li>MPI_THREAD_SINGLE gives the same behavior as MPI_Init (one thread will execute)</li>
-<li>MPI_THREAD_FUNNELED The process may be multi-threaded, but only the main thread will make MPI calls (all MPI calls are funneled to the main thread)</li>
-<li>MPI_THREAD_SERIALIZED The process may be multi-threaded, and multiple threads may make MPI calls, but only one at a time: MPI calls are not made concurrently from two distinct threads (all MPI calls are serialized)</li>
-<li><p>MPI_THREAD_MULTIPLE Multiple threads may call MPI, with no restrictions.</p>
-</li>
-<li><p>New programs should use MPI_Init_thread, and if more thread safety required, check on that (the provide arg).</p>
+<li><p>Programmer can request the level of thread safety required for the program</p>
 <ul>
-<li>Needed to use OpenMP with MPI </li>
+<li>E.g. Needed to use OpenMP with MPI 
+&nbsp;</li>
 </ul>
 </li>
+<li><p><code>MPI_THREAD_SINGLE</code> gives the same behavior as MPI_Init (one thread will execute)</p>
+</li>
+<li><code>MPI_THREAD_FUNNELED</code> The process may be multi-threaded, but only the main thread will make MPI calls <ul>
+<li>all MPI calls are funneled to the main thread</li>
+</ul>
+</li>
+<li><code>MPI_THREAD_SERIALIZED</code> The process may be multi-threaded, and multiple threads may make MPI calls, but only one at a time<ul>
+<li>MPI calls are not made concurrently from two distinct threads (all MPI calls are serialized)</li>
+</ul>
+</li>
+<li><code>MPI_THREAD_MULTIPLE</code> Multiple threads may call MPI, with no restrictions.</li>
 </ul>
 
 </div>
@@ -13572,7 +13593,22 @@ safety required for the program</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="MPI4py">MPI4py<a class="anchor-link" href="#MPI4py">&#182;</a></h1><p>At import time, mpi4py initializes the MPI execution environment calling MPI_Init_thread() and installs an exit hook to automatically call MPI_Finalize() just before the Python process terminates.</p>
+<h1 id="MPI-for-Python">MPI for Python<a class="anchor-link" href="#MPI-for-Python">&#182;</a></h1><ul>
+<li><p>At import time (<code>import mpi4py</code>)</p>
+<ul>
+<li>the module initializes the MPI execution environment calling MPI_Init_thread()</li>
+<li>installs an exit hook to automatically call MPI_Finalize() just before the Python process terminates</li>
+</ul>
+</li>
+<li><p>You can set runtime configuration options (e.g. automatic initialization, thread_level) via mpi4py.rc()</p>
+</li>
+<li>By default importing the MPI submodule calls MPI_Init()<ul>
+<li>calling Init()or Init_thread()more than once violates the MPI standard</li>
+<li>This will lead to a Python exception or an abort in C/C++</li>
+<li>use Is_initialized() to test for initialization (same for Finilize(): Is_finalized())</li>
+</ul>
+</li>
+</ul>
 
 </div>
 </div>
