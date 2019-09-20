@@ -13516,7 +13516,7 @@ Hello world<br/></p>
 
 <span class="n">comm</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span>
 <span class="n">rank</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span>
-<span class="n">size</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">Comm</span><span class="o">.</span><span class="n">Get_size</span><span class="p">()</span> 
+<span class="n">size</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_size</span><span class="p">()</span> 
 
 <span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">rank</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>
 
@@ -13659,7 +13659,8 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Error-handling">Error handling<a class="anchor-link" href="#Error-handling">&#182;</a></h1><div class="highlight"><pre><span></span><span class="n">MPI_Errhandler_set</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">MPI_ERRORS_RETURN</span><span class="p">);</span>
+<h1 id="Error-handling">Error handling<a class="anchor-link" href="#Error-handling">&#182;</a></h1><p>&nbsp;</p>
+<div class="highlight"><pre><span></span><span class="n">MPI_Errhandler_set</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">MPI_ERRORS_RETURN</span><span class="p">);</span>
 <span class="n">error_code</span> <span class="o">=</span> <span class="n">MPI_Send</span><span class="p">(</span><span class="n">send_buffer</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">send_buffer</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
                       <span class="n">MPI_CHAR</span><span class="p">,</span> <span class="n">addressee</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">);</span>
 
@@ -13790,6 +13791,7 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 </ul>
 </li>
 </ul>
+<p>mpi4py uses protocols for packing and unpacking a Python object structure</p>
 
 </div>
 </div>
@@ -13797,21 +13799,71 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="2.-How-will-the-process-be-identified">2. How will the process be identified<a class="anchor-link" href="#2.-How-will-the-process-be-identified">&#182;</a></h1><ul>
+<h1 id="2.-Identify-the-process-you-want-to-communicate-with">2. Identify the process you want to communicate with<a class="anchor-link" href="#2.-Identify-the-process-you-want-to-communicate-with">&#182;</a></h1><ul>
 <li>Processes can be collected into groups.</li>
 <li>Each message is sent in a context, and must be received in the same context.</li>
 </ul>
 <p><code>A group and context together form a communicator.</code></p>
+<p><sup><sub>(*) the context (or ID) that differentiates one communicator from another and the group of processes contained by the communicator</sub></sup></p>
 <ul>
-<li><p>A process is identified by its rank in the group associated with a communicator.</p>
-</li>
-<li><p>There is a default communicator whose group contains all initial processes, called MPI_COMM_WORLD</p>
+<li>A process is identified by its rank in the group associated with a communicator.<ul>
+<li>MPI_COMM_WORLD is enough for most applications</li>
+</ul>
 </li>
 </ul>
+<div class="highlight"><pre><span></span><span class="n">MPI_Comm_split</span><span class="p">(</span>
+    <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">color</span><span class="p">,</span>             <span class="c1">// for split</span>
+    <span class="kt">int</span> <span class="n">key</span><span class="p">,</span>               <span class="c1">// for ordering</span>
+    <span class="n">MPI_Comm</span><span class="o">*</span> <span class="n">newcomm</span><span class="p">)</span>
+</pre></div>
 
 </div>
 </div>
 </div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Get the rank and size in the original communicator</span>
+<span class="kn">from</span> <span class="nn">mpi4py</span> <span class="k">import</span> <span class="n">MPI</span>
+
+<span class="n">world_rank</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span>
+<span class="n">world_size</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">Get_size</span><span class="p">()</span>
+
+<span class="n">color</span> <span class="o">=</span> <span class="n">world_rank</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span> <span class="c1"># Determine color based on even/odd ranks</span>
+
+<span class="c1"># Split the communicator based on the color and use the</span>
+<span class="c1"># original rank for ordering</span>
+<span class="n">new_comm</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">Split</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">world_rank</span><span class="p">)</span>
+
+<span class="n">new_rank</span> <span class="o">=</span> <span class="n">new_comm</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span>
+<span class="n">new_size</span> <span class="o">=</span> <span class="n">new_comm</span><span class="o">.</span><span class="n">Get_size</span><span class="p">()</span>
+
+<span class="n">printf</span><span class="p">(</span><span class="s2">&quot;World rank/size: </span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2"> </span><span class="se">\t</span><span class="s2"> New rank/size: </span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+	<span class="n">world_rank</span><span class="p">,</span> <span class="n">world_size</span><span class="p">,</span> <span class="n">row_rank</span><span class="p">,</span> <span class="n">row_size</span><span class="p">);</span>
+
+<span class="n">new_comm</span><span class="o">.</span><span class="n">Free</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+<pre><code>World rank/size: 0/4     New rank/size: 0/2
+World rank/size: 1/4     New rank/size: 1/2
+World rank/size: 2/4     New rank/size: 0/2
+World rank/size: 3/4     New rank/size: 1/2</code></pre>
+
+</div>
+</div>
+</div></div></section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -14017,6 +14069,21 @@ and we wait later.</p>
 <ul>
 <li>There are corresponding versions of test for each of these.</li>
 </ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Useful-links">Useful links<a class="anchor-link" href="#Useful-links">&#182;</a></h1><p>mpi4py</p>
+<ul>
+<li>download and brief tutorial: www.mpi4py.com</li>
+<li>complete tutorial: <a href="https://www.bu.edu/pasi/files/2011/01/Lisandro-Dalcin-mpi4py.pdf">https://www.bu.edu/pasi/files/2011/01/Lisandro-Dalcin-mpi4py.pdf</a></li>
+</ul>
+<p>&nbsp;</p>
+<p>mpi tutorial</p>
+<p><a href="https://mpitutorial.com/tutorials">https://mpitutorial.com/tutorials</a></p>
 
 </div>
 </div>
