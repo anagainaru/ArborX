@@ -14067,8 +14067,14 @@ World rank/size: 3/4     New rank/size: 1/2</code></pre>
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Deadlock-solution">Deadlock solution<a class="anchor-link" href="#Deadlock-solution">&#182;</a></h1><ul>
 <li>Order the operations more carefully</li>
-<li>Supply receive buffer at same time as send (MPI_Sendrecv)</li>
-<li>Supply own buffer space (MPI_Bsend)</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li>Supply receive buffer at same time as send (<code>MPI_Sendrecv</code>)</li>
+<li>Supply own buffer space (<code>MPI_Bsend</code>)</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
 <li>Use non-blocking operations<ul>
 <li>Safe, but</li>
 <li>not necessarily asynchronous</li>
@@ -14090,20 +14096,21 @@ World rank/size: 3/4     New rank/size: 1/2</code></pre>
 </ul>
 </li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">MPI_Request</span> <span class="o">**</span><span class="n">request</span><span class="o">**</span><span class="p">;</span>
+<pre>
 
-<span class="n">MPI_Isend</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">datatype</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">comm</span><span class="p">,</span> <span class="o">&amp;**</span><span class="n">request</span><span class="o">**</span><span class="p">);</span>
+MPI_Request <strong>request</strong>;
 
-<span class="n">MPI_Irecv</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">datatype</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">comm</span><span class="p">,</span> <span class="o">&amp;**</span><span class="n">request</span><span class="o">**</span><span class="p">);</span>
+MPI_Isend(start, count, datatype, dest, tag, comm, &<strong>request</strong>);
 
-<span class="n">MPI_Wait</span><span class="p">(</span><span class="o">&amp;**</span><span class="n">request</span><span class="o">**</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">status</span><span class="p">);</span>
-</pre></div>
-<ul>
+MPI_Irecv(start, count, datatype, dest, tag, comm, &<strong>request</strong>);
+
+MPI_Wait(&<strong>request</strong>, &status);
+</pre><ul>
 <li>One can also test without waiting:</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">MPI_Test</span><span class="p">(</span><span class="o">&amp;**</span><span class="n">request</span><span class="o">**</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">flag</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">status</span><span class="p">);</span>
-</pre></div>
-
+<pre>
+MPI_Test(&<strong>request</strong>, &flag, &status); 
+</pre>
 </div>
 </div>
 </div></section><section>
@@ -14165,11 +14172,11 @@ rank: 1 received data [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</code></pre>
 <h1 id="Multiple-Completions">Multiple Completions<a class="anchor-link" href="#Multiple-Completions">&#182;</a></h1><ul>
 <li>Waiting on multiple requests:</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">MPI_Waitall</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="o">**</span><span class="n">array_of_requests</span><span class="o">**</span><span class="p">,</span> <span class="n">array_of_statuses</span><span class="p">);</span>
-<span class="n">MPI_Waitany</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="o">**</span><span class="n">array_of_requests</span><span class="o">**</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">index</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">status</span><span class="p">);</span>
-<span class="n">MPI_Waitsome</span><span class="p">(</span><span class="n">incount</span><span class="p">,</span> <span class="o">**</span><span class="n">array_of_requests</span><span class="o">**</span><span class="p">,</span>  <span class="o">&amp;</span><span class="n">outcount</span><span class="p">,</span> <span class="n">array_of_indices</span><span class="p">,</span> <span class="n">array_of_statuses</span><span class="p">);</span>
-</pre></div>
-<ul>
+<pre>
+MPI_Waitall(count, <strong>array_of_requests</strong>, array_of_statuses);
+MPI_Waitany(count, <strong>array_of_requests</strong>, &index, &status);
+MPI_Waitsome(incount, <strong>array_of_requests</strong>,  &outcount, array_of_indices, array_of_statuses);
+</pre><ul>
 <li>There are corresponding versions of test for each of these.</li>
 </ul>
 
