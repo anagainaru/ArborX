@@ -14014,19 +14014,22 @@ World rank/size: 3/4     New rank/size: 1/2</code></pre>
 
 </div>
 </div>
-</div></section></section><section><section>
+</div></section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Why-non-blocking-?">Why non blocking ?<a class="anchor-link" href="#Why-non-blocking-?">&#182;</a></h1><ul>
+<h1 id="Why-Non-blocking?">Why Non-blocking?<a class="anchor-link" href="#Why-Non-blocking?">&#182;</a></h1><ol>
 <li><p>Overlapping communication and computation</p>
 <ul>
 <li>It can increase performance of some applications (not always)</li>
 </ul>
 </li>
-<li><p>Avoiding the buffers</p>
-</li>
+<li><p>Avoiding deadlocks</p>
+<ul>
+<li>Completion depends on size of message and amount of system buffering</li>
 </ul>
+</li>
+</ol>
 <p><img src="./figures/send_recv_proc.png" alt="Send Receive" width="400"/></p>
 <ul>
 <li>Non blocking communication<ul>
@@ -14042,16 +14045,16 @@ World rank/size: 3/4     New rank/size: 1/2</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Blocking-communication">Blocking communication<a class="anchor-link" href="#Blocking-communication">&#182;</a></h1><ul>
-<li>Send a large message from process 0 to process 1<ul>
+<h1 id="Deadlock-example">Deadlock example<a class="anchor-link" href="#Deadlock-example">&#182;</a></h1><ul>
+<li><p>Send a large message from process 0 to process 1</p>
+<ul>
 <li>If there is insufficient storage at the destination, the send must wait for the user to provide the memory space (through a receive)</li>
 </ul>
 </li>
-<li>What happens with this code?</li>
+<li><p>What happens with this code?</p>
+</li>
 </ul>
-<p>Process 0 ---- Process 1</p>
-<p>Send(1) ------ Send(0)</p>
-<p>Recv(1) ------  Recv(0)</p>
+<p><img src="./figures/blocking_deadlock.png" alt="Deadlock" width="500"/></p>
 <ul>
 <li>This is called “unsafe” because it depends on the availability of system buffers </li>
 </ul>
@@ -14082,16 +14085,24 @@ World rank/size: 3/4     New rank/size: 1/2</code></pre>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="MPI-Non-blocking-operations">MPI Non-blocking operations<a class="anchor-link" href="#MPI-Non-blocking-operations">&#182;</a></h1><ul>
-<li>return (immediately) “request handles” that can be tested and waited on. </li>
-<li>MPI_Request request;</li>
+<li>Return immediately <ul>
+<li>give “request handles” that can be tested and waited on for completion.</li>
 </ul>
-<p><code>MPI_Isend(start, count, datatype, dest, tag, comm, &amp;request);</code></p>
-<p><code>MPI_Irecv(start, count, datatype, dest, tag, comm, &amp;request);</code></p>
-<p><code>MPI_Wait(&amp;request, &amp;status);</code></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">MPI_Request</span> <span class="o">**</span><span class="n">request</span><span class="o">**</span><span class="p">;</span>
+
+<span class="n">MPI_Isend</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">datatype</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">comm</span><span class="p">,</span> <span class="o">&amp;**</span><span class="n">request</span><span class="o">**</span><span class="p">);</span>
+
+<span class="n">MPI_Irecv</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">datatype</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">comm</span><span class="p">,</span> <span class="o">&amp;**</span><span class="n">request</span><span class="o">**</span><span class="p">);</span>
+
+<span class="n">MPI_Wait</span><span class="p">(</span><span class="o">&amp;**</span><span class="n">request</span><span class="o">**</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">status</span><span class="p">);</span>
+</pre></div>
 <ul>
 <li>One can also test without waiting:</li>
 </ul>
-<p><code>MPI_Test(&amp;request, &amp;flag, &amp;status);</code></p>
+<div class="highlight"><pre><span></span><span class="n">MPI_Test</span><span class="p">(</span><span class="o">&amp;**</span><span class="n">request</span><span class="o">**</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">flag</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">status</span><span class="p">);</span>
+</pre></div>
 
 </div>
 </div>
@@ -14152,11 +14163,11 @@ rank: 1 received data [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</code></pre>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Multiple-Completions">Multiple Completions<a class="anchor-link" href="#Multiple-Completions">&#182;</a></h1><ul>
-<li>It is sometimes desirable to wait on multiple requests:</li>
+<li>Waiting on multiple requests:</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">MPI_Waitall</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">array_of_requests</span><span class="p">,</span> <span class="n">array_of_statuses</span><span class="p">);</span>
-<span class="n">MPI_Waitany</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">array_of_requests</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">index</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">status</span><span class="p">);</span>
-<span class="n">MPI_Waitsome</span><span class="p">(</span><span class="n">incount</span><span class="p">,</span> <span class="n">array_of_requests</span><span class="p">,</span>  <span class="o">&amp;</span><span class="n">outcount</span><span class="p">,</span> <span class="n">array_of_indices</span><span class="p">,</span> <span class="n">array_of_statuses</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><span class="n">MPI_Waitall</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="o">**</span><span class="n">array_of_requests</span><span class="o">**</span><span class="p">,</span> <span class="n">array_of_statuses</span><span class="p">);</span>
+<span class="n">MPI_Waitany</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="o">**</span><span class="n">array_of_requests</span><span class="o">**</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">index</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">status</span><span class="p">);</span>
+<span class="n">MPI_Waitsome</span><span class="p">(</span><span class="n">incount</span><span class="p">,</span> <span class="o">**</span><span class="n">array_of_requests</span><span class="o">**</span><span class="p">,</span>  <span class="o">&amp;</span><span class="n">outcount</span><span class="p">,</span> <span class="n">array_of_indices</span><span class="p">,</span> <span class="n">array_of_statuses</span><span class="p">);</span>
 </pre></div>
 <ul>
 <li>There are corresponding versions of test for each of these.</li>
