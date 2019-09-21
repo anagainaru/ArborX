@@ -14296,22 +14296,22 @@ rank 3 got data from 2</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Collective-communication">Collective communication<a class="anchor-link" href="#Collective-communication">&#182;</a></h1><p><img src="./figures/collectives.png" alt="Collective patterns" align="right" height="500"/></p>
-<ul>
-<li>All communication in MPI is within a group of processes<ul>
-<li>Collective communication is over all of the processes in that group </li>
-</ul>
-</li>
-</ul>
-
+<h1 id="Collective-communication">Collective communication<a class="anchor-link" href="#Collective-communication">&#182;</a></h1>
 </div>
 </div>
 </div><div class="fragment">
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="./figures/collectives.png" alt="Collective patterns" align="right" height="500"/></p>
 <ul>
-<li>Most algorithms are log(P)</li>
+<li><p>All communication in MPI is within a group of processes</p>
+<ul>
+<li>Collective communication is over all of the processes in that group </li>
+</ul>
+</li>
+<li><p>Most algorithms are log(P)</p>
+</li>
 <li>They classify in 3 major communication patterns<ul>
 <li>Scatter, Gather, Reduce</li>
 <li>Barrier, AllReduce,  Allgather,  Alltoall</li>
