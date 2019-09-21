@@ -14068,12 +14068,10 @@ World rank/size: 3/4     New rank/size: 1/2</code></pre>
 <h1 id="Deadlock-solution">Deadlock solution<a class="anchor-link" href="#Deadlock-solution">&#182;</a></h1><ul>
 <li>Order the operations more carefully</li>
 </ul>
-<p>&nbsp;</p>
 <ul>
 <li>Supply receive buffer at same time as send (<code>MPI_Sendrecv</code>)</li>
 <li>Supply own buffer space (<code>MPI_Bsend</code>)</li>
 </ul>
-<p>&nbsp;</p>
 <ul>
 <li>Use non-blocking operations<ul>
 <li>Safe, but</li>
@@ -14182,6 +14180,116 @@ MPI_Waitsome(incount, <strong>array_of_requests</strong>,  &outcount, array_of_i
 
 </div>
 </div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Modes-for-sending-messages:">Modes for sending messages:<a class="anchor-link" href="#Modes-for-sending-messages:">&#182;</a></h1><ul>
+<li><p>Synchronous mode (<code>MPI_Ssend</code>)</p>
+<ul>
+<li>The send does not complete until a matching receive has begun. </li>
+<li>Unsafe programs deadlock.</li>
+</ul>
+</li>
+<li><p>Buffered mode (<code>MPI_Bsend</code>)</p>
+<ul>
+<li>The user supplies a buffer to the system for its use. </li>
+<li>User can allocate enough memory to make an unsafe program safe.</li>
+</ul>
+</li>
+<li><p>Ready mode (<code>MPI_Rsend</code>)</p>
+<ul>
+<li>User guarantees that a matching receive has been posted.</li>
+<li>Allows access to fast protocols</li>
+<li><em>Undefined behavior if matching receive not posted</em></li>
+</ul>
+</li>
+<li><p>Non-blocking versions for all operations (MPI_Issend, etc.)</p>
+</li>
+</ul>
+<p><code>MPI_Recv receives messages sent in any mode.</code></p>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="MPI_Sendrecv">MPI_Sendrecv<a class="anchor-link" href="#MPI_Sendrecv">&#182;</a></h1><ul>
+<li><p>Simultaneous send and receive</p>
+<ul>
+<li>Send and receive datatypes (even type signatures) may be different.</li>
+<li>Can use Sendrecv with plain Send or Recv (or Irecv or Ssend_init, ...)</li>
+</ul>
+</li>
+<li><p>Intended for sending data in a "chain"</p>
+<ul>
+<li>For instance, 0 sends to 1 while 1 sends to 2 while 2 sends to 0. </li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">MPI_Sendrecv</span><span class="p">(</span>
+  <span class="kt">void</span> <span class="o">*</span><span class="n">sendbuf</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">sendcount</span><span class="p">,</span>
+  <span class="n">MPI_Datatype</span> <span class="n">sendtype</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">dest</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">sendtag</span><span class="p">,</span>
+  <span class="kt">void</span> <span class="o">*</span><span class="n">recvbuf</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">recvcount</span><span class="p">,</span>
+  <span class="n">MPI_Datatype</span> <span class="n">recvtype</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">source</span><span class="p">,</span>
+  <span class="kt">int</span> <span class="n">recvtag</span><span class="p">,</span>
+  <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">,</span>
+  <span class="n">MPI_Status</span> <span class="o">*</span><span class="n">status</span>
+<span class="p">);</span>
+</pre></div>
+<p><strong> Both send and receive must be successful for the operation to succeed.</strong></p>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="MPI_sendrecv-example">MPI_sendrecv example<a class="anchor-link" href="#MPI_sendrecv-example">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">mpi4py</span> <span class="k">import</span> <span class="n">MPI</span>
+
+<span class="n">comm</span><span class="o">=</span><span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span>
+<span class="n">rank</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span>
+<span class="n">size</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_size</span><span class="p">()</span>
+
+<span class="n">to</span> <span class="o">=</span> <span class="p">(</span><span class="n">rank</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="k">size</span>
+<span class="n">frm</span> <span class="o">=</span> <span class="p">(</span><span class="n">rank</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="k">size</span>
+
+<span class="n">sdata</span> <span class="o">=</span> <span class="n">rank</span>
+<span class="n">rdata</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">sendrecv</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="n">to</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">frm</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;rank </span><span class="si">%d</span><span class="s2"> got data from </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">rdata</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+<pre><code>rank 0 got data from 3
+rank 1 got data from 0
+rank 2 got data from 1
+rank 3 got data from 2</code></pre>
+
+</div>
+</div>
 </div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -14203,6 +14311,14 @@ MPI_Waitsome(incount, <strong>array_of_requests</strong>,  &outcount, array_of_i
 </ul>
 </li>
 </ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Profiling">Profiling<a class="anchor-link" href="#Profiling">&#182;</a></h1><p>Lecure 23</p>
 
 </div>
 </div>
