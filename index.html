@@ -13260,7 +13260,9 @@ a.anchor-link {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Types-of-Parallel-Computing-Models">Types of Parallel Computing Models<a class="anchor-link" href="#Types-of-Parallel-Computing-Models">&#182;</a></h1><blockquote><p>Implicit Parallelism: Parallelizing Compilers</p>
-<p>Explicit Parallelism:  Data Parallel | Task parallel | Message Passing (<strong>MPI</strong>)</p>
+<p>Explicit Parallelism:  Data Parallel | Task parallel</p>
+
+<pre><code>                   Message Passing (**MPI**)</code></pre>
 </blockquote>
 
 </div>
@@ -13684,7 +13686,7 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 </li>
 <li><p>MPI errors as Python exceptions, can be dealt with the common <code>try…except…finally</code> clauses</p>
 <ul>
-<li>unhandled MPI exceptions will print a traceback which helps in locating problems in source code.</li>
+<li>Unhandled MPI exceptions will print a traceback which helps in locating problems in source code.</li>
 </ul>
 </li>
 </ul>
@@ -13698,7 +13700,8 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="MPI-for-python">MPI for python<a class="anchor-link" href="#MPI-for-python">&#182;</a></h1><p><code>Unfortunately, automatic MPI finalization + unhandled exceptions can lead to deadlocks.</code></p>
+<h1 id="MPI-for-python">MPI for python<a class="anchor-link" href="#MPI-for-python">&#182;</a></h1><blockquote><p>Automatic MPI finalization + unhandled exceptions can lead to deadlocks.</p>
+</blockquote>
 
 </div>
 </div>
@@ -13734,7 +13737,7 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 <p>OR</p>
 <ul>
 <li>Run Python code passing -m mpi4py in the command line<ul>
-<li>In case of unhandled exceptions, the finalizer hook will call MPI_Abort() on the MPI_COMM_WORLD communicator<ul>
+<li>In case of unhandled exceptions, the finalizer hook will call <code>MPI_Abort()</code> on the <code>MPI_COMM_WORLD</code> communicator<ul>
 <li>This will abort the MPI execution environment.</li>
 </ul>
 </li>
@@ -13742,7 +13745,8 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 </li>
 </ul>
 <p>&nbsp;</p>
-<p><code>mpiexec -n numprocs python -m mpi4py pyfile [arg]</code></p>
+<div class="highlight"><pre><span></span>mpiexec -n numprocs python -m mpi4py pyfile <span class="o">[</span>arg<span class="o">]</span>
+</pre></div>
 
 </div>
 </div>
