@@ -14412,7 +14412,9 @@ rank 3 got data from 2</code></pre>
 </ul>
 </li>
 </ul>
-<p><code>Each process can get different data with the {function}v variant of each method</code></p>
+<hr>
+<p><code>All collective operations must be called by all processes in the communicator</code></p>
+<p>Each process can get different data with the {function}v variant of each method</p>
 
 </div>
 </div>
@@ -14424,6 +14426,108 @@ rank 3 got data from 2</code></pre>
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">bcast</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">proc_id</span><span class="p">)</span>
+<span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">proc_id</span><span class="p">)</span>
+<span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">proc_id</span><span class="p">)</span>
+<span class="c1"># for numpy arrays</span>
+<span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">sendbuf</span><span class="p">,</span> <span class="n">recvbuf</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Collective-Data-Movement">Collective Data Movement<a class="anchor-link" href="#Collective-Data-Movement">&#182;</a></h1><p><img src="./figures/move_data_all.png" alt="Collectives"></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="c1"># sendobj is iterable</span>
+<span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">allgather</span><span class="p">(</span><span class="n">sendobj</span><span class="p">)</span>
+<span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">alltoall</span><span class="p">(</span><span class="n">sendobj</span><span class="p">)</span>
+<span class="c1"># for numpy arrays</span>
+<span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">Allgather</span><span class="p">([</span><span class="n">x</span><span class="p">,</span>  <span class="n">MPI</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">],</span> <span class="p">[</span><span class="n">xg</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">])</span>
+</pre></div>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Collective-Data-Movement---Notes">Collective Data Movement - Notes<a class="anchor-link" href="#Collective-Data-Movement---Notes">&#182;</a></h1><ul>
+<li><p>MPI_Allgather is equivalent to</p>
+<ul>
+<li>MPI_Gather followed by MPI_Bcast</li>
+<li>Algorithms for MPI_Allgather can be faster (try on ACCRE)</li>
+</ul>
+</li>
+<li><p>MPI_Alltoall</p>
+<ul>
+<li>Performs a “transpose” of the data</li>
+<li>Tricky to implement efficiently<ul>
+<li>Implementation have a hard time scaling to the size of today's supercomputers</li>
+<li>For large messages point to point communication is preferable</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Variants">Variants<a class="anchor-link" href="#Variants">&#182;</a></h1><ul>
+<li>The basic routines send the same amount of data from each process</li>
+</ul>
+<p><code>MPI_Scatter(sendbuf, 1, MPI_INT, rbuf, 100, MPI_INT, root, comm);</code></p>
+<p><sub><sup>(*) sends 1 int to each process</sup></sub></p>
+<ul>
+<li><p>Sending a different number of items to each process</p>
+<ul>
+<li>Use MPI_Scatterv</li>
+<li>Routines with “v” (for vector) at the end allow the to specify <ul>
+<li>a different number of elements for each destination (one to all routines) </li>
+<li>or source (all to one routines)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Efficient algorithms exist for these cases (not alltoall), though not as fast as the simpler, basic routines</p>
+</li>
+</ul>
+<p><strong>Variant alltoallw:</strong></p>
+<ul>
+<li>Allows different datatypes, counts, and displacements for each partner</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 </div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
