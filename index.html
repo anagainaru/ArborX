@@ -13567,14 +13567,19 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 &nbsp;</li>
 </ul>
 </li>
-<li><p><code>MPI_THREAD_SINGLE</code> gives the same behavior as MPI_Init (one thread will execute)</p>
+<li><p><code>MPI_THREAD_SINGLE</code> gives the same behavior as MPI_Init</p>
+<ul>
+<li>one thread will execute</li>
+</ul>
 </li>
-<li><code>MPI_THREAD_FUNNELED</code> The process may be multi-threaded, but only the main thread will make MPI calls <ul>
+<li><code>MPI_THREAD_FUNNELED</code> The process may be multi-threaded<ul>
+<li>only the main thread will make MPI calls </li>
 <li>all MPI calls are funneled to the main thread</li>
 </ul>
 </li>
 <li><code>MPI_THREAD_SERIALIZED</code> The process may be multi-threaded, and multiple threads may make MPI calls, but only one at a time<ul>
-<li>MPI calls are not made concurrently from two distinct threads (all MPI calls are serialized)</li>
+<li>MPI calls are not made concurrently from two distinct threads </li>
+<li>all MPI calls are serialized</li>
 </ul>
 </li>
 <li><code>MPI_THREAD_MULTIPLE</code> Multiple threads may call MPI, with no restrictions.</li>
@@ -13589,16 +13594,19 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 <h1 id="MPI-for-Python">MPI for Python<a class="anchor-link" href="#MPI-for-Python">&#182;</a></h1><ul>
 <li><p>At import time (<code>import mpi4py</code>)</p>
 <ul>
-<li>the module initializes the MPI execution environment calling MPI_Init_thread()</li>
-<li>installs an exit hook to automatically call MPI_Finalize() just before the Python process terminates</li>
+<li>the module initializes the MPI execution environment calling <code>MPI_Init_thread()</code></li>
+<li>installs an exit hook to automatically call <code>MPI_Finalize()</code> just before the Python process terminates</li>
 </ul>
 </li>
-<li><p>You can set runtime configuration options (e.g. automatic initialization, thread_level) via mpi4py.rc()</p>
+<li><p>You can set runtime configuration options (e.g. automatic initialization, thread_level) via <code>mpi4py.rc()</code></p>
 </li>
-<li>By default importing the MPI submodule calls MPI_Init()<ul>
-<li>calling Init()or Init_thread()more than once violates the MPI standard</li>
+<li>By default importing the MPI submodule calls <code>MPI_Init()</code><ul>
+<li>calling Init() or Init_thread()more than once violates the MPI standard</li>
 <li>This will lead to a Python exception or an abort in C/C++</li>
-<li>use Is_initialized() to test for initialization (same for Finilize(): Is_finalized())</li>
+<li>use <code>Is_initialized()</code> to test for initialization <ul>
+<li>similarly for Finilize: <code>Is_finalized()</code>)</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -13627,8 +13635,8 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 <li>MPI routines return error codes</li>
 <li>Each code belongs to an error class</li>
 <li>The returned error code is implementation specific</li>
-<li>The only error code that MPI standard itself defines is MPI_SUCCESS, i.e., no error</li>
-<li>The meaning of an error code can be extracted by calling function MPI_Error_string. </li>
+<li>The only error code that MPI standard itself defines is <code>MPI_SUCCESS</code>, i.e., no error</li>
+<li>The meaning of an error code can be extracted by calling function <code>MPI_Error_string</code>. </li>
 </ul>
 </li>
 <li><p>An MPI implementation can use error codes to return instance-specific information on the error</p>
@@ -13647,6 +13655,7 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Error-handling">Error handling<a class="anchor-link" href="#Error-handling">&#182;</a></h1><p>&nbsp;</p>
 <div class="highlight"><pre><span></span><span class="n">MPI_Errhandler_set</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="n">MPI_ERRORS_RETURN</span><span class="p">);</span>
+
 <span class="n">error_code</span> <span class="o">=</span> <span class="n">MPI_Send</span><span class="p">(</span><span class="n">send_buffer</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">send_buffer</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
                       <span class="n">MPI_CHAR</span><span class="p">,</span> <span class="n">addressee</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">MPI_COMM_WORLD</span><span class="p">);</span>
 
@@ -13655,6 +13664,7 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
     <span class="kt">int</span> <span class="n">length_of_error_string</span><span class="p">;</span>
 
     <span class="n">MPI_Error_string</span><span class="p">(</span><span class="n">error_code</span><span class="p">,</span> <span class="n">error_string</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">length_of_error_string</span><span class="p">);</span>
+
     <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;%3d: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">my_rank</span><span class="p">,</span> <span class="n">error_string</span><span class="p">);</span>
     <span class="n">send_error</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
 <span class="p">}</span>
@@ -13667,19 +13677,20 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="MPI-for-python">MPI for python<a class="anchor-link" href="#MPI-for-python">&#182;</a></h1><ul>
-<li><p>mpi4py overrides the default MPI.ERRORS_ARE_FATAL error handler in favor of MPI.ERRORS_RETURN</p>
+<li><p>mpi4py overrides the default <code>MPI.ERRORS_ARE_FATAL</code> error handler in favor of <code>MPI.ERRORS_RETURN</code></p>
 <ul>
 <li>which allows translating MPI errors in Python exceptions.</li>
 </ul>
 </li>
-<li><p>MPI errors as Python exceptions, can be dealt with the common try…except…finally clauses</p>
+<li><p>MPI errors as Python exceptions, can be dealt with the common <code>try…except…finally</code> clauses</p>
 <ul>
 <li>unhandled MPI exceptions will print a traceback which helps in locating problems in source code.</li>
 </ul>
 </li>
 </ul>
 <p>&nbsp;</p>
-<p><code>Unfortunately, automatic MPI finalization + unhandled exceptions can lead to deadlocks.</code></p>
+<blockquote><p>Automatic MPI finalization + unhandled exceptions can lead to deadlocks.</p>
+</blockquote>
 
 </div>
 </div>
