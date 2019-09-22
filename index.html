@@ -14515,19 +14515,68 @@ rank 3 got data from 2</code></pre>
 
 </div>
 </div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Collective-Computation">Collective Computation<a class="anchor-link" href="#Collective-Computation">&#182;</a></h1><ul>
+<li>Combines communication with computation<ul>
+<li>Reduce<ul>
+<li>All to one, with an operation to combine</li>
+</ul>
+</li>
+<li>Scan, Exscan<ul>
+<li>All prior ranks to all, with combination</li>
+</ul>
+</li>
+<li>Reduce_scatter<ul>
+<li>All to all, with combination</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>Combination operations either<ul>
+<li>Predefined operations</li>
+<li>User defined operations </li>
+</ul>
+</li>
+</ul>
+
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Reduction">Reduction<a class="anchor-link" href="#Reduction">&#182;</a></h1><p><img src="./figures/reduction.png" alt="Reduce" align="left" width="477"/></p>
+<h2 id="|-MPI-reduction-operations-include:-|">| MPI reduction operations include: |<a class="anchor-link" href="#|-MPI-reduction-operations-include:-|">&#182;</a></h2><p>| MPI.MAX |
+| MPI.MIN |
+| MPI.SUM |
+| MPI.PROD |
+| MPI.LAND / MPI.RAND |
+| MPI.LOR / MPI.ROR |
+| MPI.MAXLOC |
+| MPI.MINLOC |</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">sendobj</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="n">MPI</span><span class="o">.</span><span class="n">SUM</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">allreduce</span><span class="p">(</span><span class="n">sendobj</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="n">MPI</span><span class="o">.</span><span class="n">SUM</span><span class="p">)</span>
 </pre></div>
+<ul>
+<li>reduce is similar to gather but result is aggregated using different reduction operations</li>
+<li>allreduce is similar to allgather</li>
+</ul>
 
-    </div>
 </div>
 </div>
-
 </div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
