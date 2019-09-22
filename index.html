@@ -14492,15 +14492,13 @@ rank 3 got data from 2</code></pre>
 <h1 id="Variants">Variants<a class="anchor-link" href="#Variants">&#182;</a></h1><ul>
 <li>The basic routines send the same amount of data from each process</li>
 </ul>
-<p><code>MPI_Scatter(sendbuf, 1, MPI_INT, rbuf, 100, MPI_INT, root, comm);</code></p>
-<p><sub><sup>(*) sends 1 int to each process</sup></sub></p>
-<ul>
+<p><code>MPI_Scatter(sbuf, 1, MPI_INT, rbuf, 100, MPI_INT, root, comm);</code></p>
+<div align="right"><small>(*) sends 1 int to each process</small></div><ul>
 <li><p>Sending a different number of items to each process</p>
 <ul>
 <li>Use MPI_Scatterv</li>
 <li>Routines with “v” (for vector) at the end allow the to specify <ul>
-<li>a different number of elements for each destination (one to all routines) </li>
-<li>or source (all to one routines)</li>
+<li>a different number of elements for each destination/ source</li>
 </ul>
 </li>
 </ul>
@@ -14552,6 +14550,8 @@ rank 3 got data from 2</code></pre>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h4 id="Reduction">Reduction<a class="anchor-link" href="#Reduction">&#182;</a></h4><p><img src="./figures/reduction.png" alt="Reduce" align="left" width="477"/></p>
+<p>&nbsp;<br/>
+&nbsp;</p>
 <table>
 <thead><tr>
 <th></th>
@@ -14563,13 +14563,7 @@ rank 3 got data from 2</code></pre>
 <tr>
 <td></td>
 <td>MPI.MAX</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
 <td>MPI.MIN</td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -14599,13 +14593,7 @@ rank 3 got data from 2</code></pre>
 <tr>
 <td></td>
 <td>MPI.MAXLOC</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
 <td>MPI.MINLOC</td>
-<td></td>
 <td></td>
 </tr>
 </tbody>
