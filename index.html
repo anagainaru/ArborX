@@ -14688,6 +14688,7 @@ rank 3 got data from 2</code></pre>
 </pre></div>
 </li>
 </ul>
+<p><strong>The operation op is always assumed to be associative</strong></p>
 <p><em>The user function can be non-commutative.</em> <code>Example?</code></p>
 
 </div>
@@ -14698,8 +14699,7 @@ rank 3 got data from 2</code></pre>
 <div class="text_cell_render border-box-sizing rendered_html">
 
 <pre><code>Matrix multiplication
-Substraction / Division
-Vector product</code></pre>
+Substraction / Division</code></pre>
 
 </div>
 </div>
@@ -14752,7 +14752,7 @@ Vector product</code></pre>
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">size</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">Get_size</span><span class="p">()</span>
 <span class="n">rank</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span>
 
-<span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">Complex</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">rank</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="n">rank</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">Complex</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">rank</span><span class="p">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">rank</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
 <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="n">Complex</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Rank </span><span class="si">%d</span><span class="s2">: Data </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">a</span><span class="p">]))</span>
 
@@ -14772,11 +14772,20 @@ Vector product</code></pre>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 
-<pre><code>Rank 0: Data [(0, 0), (0, 1), (0, 2)]
-Rank 1: Data [(0, 1), (1, 2), (2, 3)]
-Rank 2: Data [(0, 2), (2, 3), (4, 4)]
-Rank 3: Data [(0, 3), (3, 4), (6, 5)]
-Product:</code></pre>
+<pre><code>Rank 0: Data [(0, 0), (1, 0), (2, 0)]
+Rank 1: Data [(1, 0), (2, 1), (3, 2)]
+Rank 2: Data [(2, 0), (3, 2), (4, 4)]
+Rank 3: Data [(3, 0), (4, 3), (5, 6)]
+Product: [(0, 0), (24, 9), (120, 96)]</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For implementation in C:
+<a href="https://www.mpi-forum.org/docs/mpi-1.1/mpi-11-html/node80.html">https://www.mpi-forum.org/docs/mpi-1.1/mpi-11-html/node80.html</a></p>
 
 </div>
 </div>
