@@ -14422,6 +14422,27 @@ rank 3 got data from 2</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Collective-communication-semantics">Collective communication semantics<a class="anchor-link" href="#Collective-communication-semantics">&#182;</a></h1><ul>
+<li><p>Collective routines on the same communicator must be called in the same order on all participating processes</p>
+</li>
+<li><p>For multi-threaded processes (MPI_THREAD_MULTIPLE)</p>
+<ul>
+<li>it is the users responsibility to ensure order</li>
+</ul>
+</li>
+<li><p>Message tags are not used</p>
+<ul>
+<li>Use different communicators to separate collective operations on the same process</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Collective-Data-Movement">Collective Data Movement<a class="anchor-link" href="#Collective-Data-Movement">&#182;</a></h1><p><img src="./figures/move_data.png" alt="Collectives"></p>
 
 </div>
@@ -14549,7 +14570,7 @@ rank 3 got data from 2</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Reduction">Reduction<a class="anchor-link" href="#Reduction">&#182;</a></h4><p><img src="./figures/reduction.png" alt="Reduce" align="left" width="477"/></p>
+<h1 id="Reduction">Reduction<a class="anchor-link" href="#Reduction">&#182;</a></h1><p><img src="./figures/reduction.png" alt="Reduce" align="left" width="477"/></p>
 <p>&nbsp;<br/>
 &nbsp;</p>
 <table>
@@ -14596,6 +14617,12 @@ rank 3 got data from 2</code></pre>
 <td>MPI.MINLOC</td>
 <td></td>
 </tr>
+<tr>
+<td></td>
+<td>MPI_BXOR</td>
+<td></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 
@@ -14612,6 +14639,158 @@ rank 3 got data from 2</code></pre>
 <li>reduce is similar to gather but result is aggregated using different ops</li>
 <li>allreduce is similar to allgather</li>
 </ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Collective-computation">Collective computation<a class="anchor-link" href="#Collective-computation">&#182;</a></h1><p><img src="./figures/reduction_all.png" alt="Collectives"></p>
+<blockquote><p><strong><code>Allreduce</code>, <code>Exscan</code>, <code>Reduce</code>, <code>Reduce_scatter</code>, and <code>Scan</code> take both built-in and user-defined combiner functions.</strong></p>
+</blockquote>
+<p>&nbsp;</p>
+<ul>
+<li>All collectives<ul>
+<li>All versions deliver results to all participating processes</li>
+<li>Most routines accept both intra- and intercommunicators<ul>
+<li>Intercommunicator versions are collective between two groups of processes </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Define-your-own-collective-routine">Define your own collective routine<a class="anchor-link" href="#Define-your-own-collective-routine">&#182;</a></h1><div class="highlight"><pre><span></span><span class="n">MPI_Op_create</span><span class="p">(</span><span class="n">user_fcn</span><span class="p">,</span> <span class="n">commutes</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">op</span><span class="p">);</span>
+<span class="n">MPI_Op_free</span><span class="p">(</span><span class="o">&amp;</span><span class="n">op</span><span class="p">);</span>
+
+<span class="n">user_fcn</span><span class="p">(</span><span class="n">invec</span><span class="p">,</span> <span class="n">inoutvec</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="n">datatype</span><span class="p">);</span>
+</pre></div>
+<ul>
+<li>If commute == true<ul>
+<li>the operation should be both commutative and associative</li>
+</ul>
+</li>
+<li><p>If commute == false</p>
+<ul>
+<li>the order of operands is fixed and is defined to be in ascending, process rank order, beginning with process zero</li>
+</ul>
+</li>
+<li><p>The user function should perform:</p>
+<div class="highlight"><pre><span></span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+  <span class="n">inoutvec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">invec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="n">op</span> <span class="n">inoutvec</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</pre></div>
+</li>
+</ul>
+<p><em>The user function can be non-commutative.</em> <code>Example?</code></p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+<pre><code>Matrix multiplication
+Substraction / Division
+Vector product</code></pre>
+
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Define-your-own-collective-example">Define your own collective example<a class="anchor-link" href="#Define-your-own-collective-example">&#182;</a></h1><p>Product of complex number</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">Complex</span> <span class="k">import</span> <span class="n">Complex</span>
+<span class="c1"># Complex class defined in a separate file</span>
+
+<span class="k">def</span> <span class="nf">myprod</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)):</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">Complex</span><span class="p">()</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">real</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">real</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">real</span> <span class="o">-</span>
+                 <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">img</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">img</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">real</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">img</span> <span class="o">+</span>
+                <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">img</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>
+        <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">b</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">size</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">Get_size</span><span class="p">()</span>
+<span class="n">rank</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">Complex</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">rank</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="n">rank</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="n">Complex</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Rank </span><span class="si">%d</span><span class="s2">: Data </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">a</span><span class="p">]))</span>
+
+<span class="n">myop</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">Op</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="n">myprod</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span> <span class="c1"># commute is True</span>
+<span class="n">Comm</span><span class="o">.</span><span class="n">Reduce</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="n">myop</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">rank</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Producs: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">b</span><span class="p">]))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+<pre><code>Rank 0: Data [(0, 0), (0, 1), (0, 2)]
+Rank 1: Data [(0, 1), (1, 2), (2, 3)]
+Rank 2: Data [(0, 2), (2, 3), (4, 4)]
+Rank 3: Data [(0, 3), (3, 4), (6, 5)]
+Product:</code></pre>
+
+</div>
+</div>
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>How Deterministic are
+Collective Computations? 
+In exact arithmetic, you always get the same results
+♦ but roundoff error, truncation can happen
+• MPI does not require that the same input give the same
+output every time
+♦ Implementations are encouraged but not required to
+provide exactly the same output given the same input
+♦ Round-off error may cause slight differences
+• Allreduce does guarantee that the same value is
+received by all processes for each call
+• Why didn’t MPI mandate determinism?
+♦ Not all applications need it
+♦ Implementations of collective algorithms can use “deferred
+synchronization” ideas to provide better performance</p>
 
 </div>
 </div>
