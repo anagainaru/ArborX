@@ -14647,9 +14647,8 @@ rank 3 got data from 2</code></pre>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Collective-computation">Collective computation<a class="anchor-link" href="#Collective-computation">&#182;</a></h1><p><img src="./figures/reduction_all.png" alt="Collectives"></p>
-<blockquote><p><strong><code>Allreduce</code>, <code>Exscan</code>, <code>Reduce</code>, <code>Reduce_scatter</code>, and <code>Scan</code> take both built-in and user-defined combiner functions.</strong></p>
+<blockquote><p><code>Allreduce</code>, <code>Exscan</code>, <code>Reduce</code>, <code>Reduce_scatter</code>, and <code>Scan</code> take both built-in and user-defined combiner functions.</p>
 </blockquote>
-<p>&nbsp;</p>
 <ul>
 <li>All collectives<ul>
 <li>All versions deliver results to all participating processes</li>
@@ -14667,7 +14666,8 @@ rank 3 got data from 2</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Define-your-own-collective-routine">Define your own collective routine<a class="anchor-link" href="#Define-your-own-collective-routine">&#182;</a></h1><div class="highlight"><pre><span></span><span class="n">MPI_Op_create</span><span class="p">(</span><span class="n">user_fcn</span><span class="p">,</span> <span class="n">commutes</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">op</span><span class="p">);</span>
+<h1 id="Define-your-own-collective-routine">Define your own collective routine<a class="anchor-link" href="#Define-your-own-collective-routine">&#182;</a></h1><p>&nbsp;</p>
+<div class="highlight"><pre><span></span><span class="n">MPI_Op_create</span><span class="p">(</span><span class="n">user_fcn</span><span class="p">,</span> <span class="n">commutes</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">op</span><span class="p">);</span>
 <span class="n">MPI_Op_free</span><span class="p">(</span><span class="o">&amp;</span><span class="n">op</span><span class="p">);</span>
 
 <span class="n">user_fcn</span><span class="p">(</span><span class="n">invec</span><span class="p">,</span> <span class="n">inoutvec</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="n">datatype</span><span class="p">);</span>
@@ -14735,6 +14735,14 @@ Vector product</code></pre>
 </div>
 </div>
 
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Define-your-own-collective-example">Define your own collective example<a class="anchor-link" href="#Define-your-own-collective-example">&#182;</a></h1><p>Product of complex number</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
