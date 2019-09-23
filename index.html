@@ -14416,8 +14416,8 @@ rank 3 got data from 2</code></pre>
 </ul>
 </li>
 </ul>
-<hr>
-<p><code>All collective operations must be called by all processes in the communicator</code></p>
+<blockquote><p>All collective operations must be called by all processes in the communicator</p>
+</blockquote>
 <p>Each process can get different data with the {function}v variant of each method</p>
 
 </div>
@@ -14429,7 +14429,7 @@ rank 3 got data from 2</code></pre>
 <h1 id="Collective-communication-semantics">Collective communication semantics<a class="anchor-link" href="#Collective-communication-semantics">&#182;</a></h1><ul>
 <li><p>Collective routines on the same communicator must be called in the same order on all participating processes</p>
 </li>
-<li><p>For multi-threaded processes (MPI_THREAD_MULTIPLE)</p>
+<li><p>For multi-threaded processes (<code>MPI_THREAD_MULTIPLE</code>)</p>
 <ul>
 <li>it is the users responsibility to ensure order</li>
 </ul>
@@ -14458,6 +14458,7 @@ rank 3 got data from 2</code></pre>
 <div class="highlight"><pre><span></span><span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">bcast</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">proc_id</span><span class="p">)</span>
 <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">proc_id</span><span class="p">)</span>
 <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">proc_id</span><span class="p">)</span>
+
 <span class="c1"># for numpy arrays</span>
 <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">sendbuf</span><span class="p">,</span> <span class="n">recvbuf</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
@@ -14479,6 +14480,7 @@ rank 3 got data from 2</code></pre>
 <div class="highlight"><pre><span></span><span class="c1"># sendobj is iterable</span>
 <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">allgather</span><span class="p">(</span><span class="n">sendobj</span><span class="p">)</span>
 <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">alltoall</span><span class="p">(</span><span class="n">sendobj</span><span class="p">)</span>
+
 <span class="c1"># for numpy arrays</span>
 <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">Allgather</span><span class="p">([</span><span class="n">x</span><span class="p">,</span>  <span class="n">MPI</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">],</span> <span class="p">[</span><span class="n">xg</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">])</span>
 </pre></div>
@@ -14490,13 +14492,13 @@ rank 3 got data from 2</code></pre>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Collective-Data-Movement---Notes">Collective Data Movement - Notes<a class="anchor-link" href="#Collective-Data-Movement---Notes">&#182;</a></h1><ul>
-<li><p>MPI_Allgather is equivalent to</p>
+<li><p><code>MPI_Allgather</code> is equivalent to</p>
 <ul>
-<li>MPI_Gather followed by MPI_Bcast</li>
-<li>Algorithms for MPI_Allgather can be faster (try on ACCRE)</li>
+<li><code>MPI_Gather</code> followed by <code>MPI_Bcast</code></li>
+<li>Algorithms for <code>MPI_Allgather</code> are usually faster (try on ACCRE)</li>
 </ul>
 </li>
-<li><p>MPI_Alltoall</p>
+<li><p><code>MPI_Alltoall</code></p>
 <ul>
 <li>Performs a “transpose” of the data</li>
 <li>Tricky to implement efficiently<ul>
@@ -14518,12 +14520,12 @@ rank 3 got data from 2</code></pre>
 <li>The basic routines send the same amount of data from each process</li>
 </ul>
 <p><code>MPI_Scatter(sbuf, 1, MPI_INT, rbuf, 100, MPI_INT, root, comm);</code></p>
-<div align="right"><small>(*) sends 1 int to each process</small></div><ul>
+<div align="right"><small>(*) sends one integer to each process</small></div><ul>
 <li><p>Sending a different number of items to each process</p>
 <ul>
-<li>Use MPI_Scatterv</li>
-<li>Routines with “v” (for vector) at the end allow the to specify <ul>
-<li>a different number of elements for each destination/ source</li>
+<li>Example: <code>MPI_Scatterv</code></li>
+<li>Routines with “v” (for vector) at the end <ul>
+<li>allow to specify a different number of elements for each destination/source</li>
 </ul>
 </li>
 </ul>
@@ -14653,13 +14655,10 @@ rank 3 got data from 2</code></pre>
 <h1 id="Collective-computation">Collective computation<a class="anchor-link" href="#Collective-computation">&#182;</a></h1><p><img src="./figures/reduction_all.png" alt="Collectives"></p>
 <blockquote><p><code>Allreduce</code>, <code>Exscan</code>, <code>Reduce</code>, <code>Reduce_scatter</code>, and <code>Scan</code> take both built-in and user-defined combiner functions.</p>
 </blockquote>
-<ul>
-<li>All collectives<ul>
+<h2 id="All-collectives">All collectives<a class="anchor-link" href="#All-collectives">&#182;</a></h2><ul>
 <li>All versions deliver results to all participating processes</li>
 <li>Most routines accept both intra- and intercommunicators<ul>
 <li>Intercommunicator versions are collective between two groups of processes </li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -14677,13 +14676,13 @@ rank 3 got data from 2</code></pre>
 <span class="n">user_fcn</span><span class="p">(</span><span class="n">invec</span><span class="p">,</span> <span class="n">inoutvec</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="n">datatype</span><span class="p">);</span>
 </pre></div>
 <ul>
-<li>If commute == true<ul>
-<li>the operation should be both commutative and associative</li>
+<li><p>Depending on the value of <code>commute</code></p>
+<ul>
+<li>True: the operation should be both commutative and associative</li>
+<li>False: the order of operands is fixed <ul>
+<li>defined to be in ascending, process rank order, beginning with process zero</li>
 </ul>
 </li>
-<li><p>If commute == false</p>
-<ul>
-<li>the order of operands is fixed and is defined to be in ascending, process rank order, beginning with process zero</li>
 </ul>
 </li>
 <li><p>The user function should perform:</p>
@@ -14692,8 +14691,8 @@ rank 3 got data from 2</code></pre>
 </pre></div>
 </li>
 </ul>
-<p><strong>The operation op is always assumed to be associative</strong></p>
-<p><em>The user function can be non-commutative.</em> <code>Example?</code></p>
+<p><em>The operation op is always assumed to be associative.</em> 
+<em>The user function can be non-commutative.</em> <code>Example?</code></p>
 
 </div>
 </div>
@@ -14712,6 +14711,8 @@ Substraction / Division</code></pre>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Define-your-own-collective-example">Define your own collective example<a class="anchor-link" href="#Define-your-own-collective-example">&#182;</a></h1><p>Product of complex number</p>
+<div class="highlight"><pre><span></span><span class="n">user_fcn</span><span class="p">(</span><span class="n">invec</span><span class="p">,</span> <span class="n">inoutvec</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="n">datatype</span><span class="p">);</span>
+</pre></div>
 
 </div>
 </div>
@@ -14800,7 +14801,7 @@ Product: [(0, 0), (24, 9), (120, 96)]</code></pre>
 <h1 id="Non-Blocking-Collective-Operations">Non-Blocking Collective Operations<a class="anchor-link" href="#Non-Blocking-Collective-Operations">&#182;</a></h1><ul>
 <li><p>MPI-3 introduced nonblocking versions of collective operations</p>
 <ul>
-<li>All return an MPI_Request, use the usual MPI_Wait, MPI_Test, etc. to complete.</li>
+<li>All return an <code>MPI_Request</code>, use the usual <code>MPI_Wait</code>, <code>MPI_Test</code>, etc. to complete.</li>
 <li>May be mixed with point-to-point and other MPI_Requests</li>
 <li>Not necessary faster<ul>
 <li>Follow same ordering rules as blocking operations</li>
@@ -14808,7 +14809,7 @@ Product: [(0, 0), (24, 9), (120, 96)]</code></pre>
 </li>
 </ul>
 </li>
-<li><p>MPI_Ibarrier</p>
+<li><p><code>MPI_Ibarrier</code></p>
 <ul>
 <li>Useful for distributed termination detection </li>
 </ul>
