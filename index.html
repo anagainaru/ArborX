@@ -13471,10 +13471,12 @@ Hello world<br/></p>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">“mpi.h”</span><span class="cp"></span>
+
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
 <span class="p">{</span>
- <span class="kt">int</span> <span class="n">rank</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">provided</span>
- <span class="kt">float</span> <span class="n">A</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+ <span class="kt">int</span> <span class="n">rank</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">provided</span><span class="p">;</span>
+ <span class="kt">float</span> <span class="n">A</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+
  <span class="n">MPI_Init_thread</span><span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">argv</span><span class="p">,</span> <span class="n">MPI_THREAD_SINGLE</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">provided</span><span class="p">);</span>
 
  <span class="n">MPI_Comm_size</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">size</span><span class="p">);</span>
@@ -13483,10 +13485,12 @@ Hello world<br/></p>
  <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
      <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">rank</span><span class="p">;</span>
 
-    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;My rank %d of %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">size</span> <span class="p">);</span>
+ <span class="n">printf</span><span class="p">(</span><span class="s">&quot;My rank %d of %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">size</span> <span class="p">);</span>
+
  <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Here are my values for A</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
  <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%f &quot;</span><span class="p">,</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
  <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
  <span class="n">MPI_Finalize</span><span class="p">();</span>
 <span class="p">}</span>
 </pre></div>
@@ -13546,6 +13550,7 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 </ul>
 </li>
 </ul>
+<p>&nbsp;</p>
 <ul>
 <li>I/O to standard output <strong>is not</strong> part of MPI<ul>
 <li>output order undefined (may be interleaved by character, line, or blocks of characters) </li>
@@ -13772,8 +13777,7 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="1.-Describing-the-data">1. Describing the data<a class="anchor-link" href="#1.-Describing-the-data">&#182;</a></h1><p>The message buffer is described by <code>(start, count, datatype)</code></p>
-<ul>
+<h1 id="1.-Describing-the-data">1. Describing the data<a class="anchor-link" href="#1.-Describing-the-data">&#182;</a></h1><h4 id="The-message-buffer-is-described-by-(start,-count,-datatype)">The message buffer is described by <code>(start, count, datatype)</code><a class="anchor-link" href="#The-message-buffer-is-described-by-(start,-count,-datatype)">&#182;</a></h4><ul>
 <li><p>Datatype can be:</p>
 <ul>
 <li>Predefined corresponding to a data type from the language (MPI_CHAR, MPI_INT, MPI_DOUBLE, etc)</li>
@@ -13797,15 +13801,16 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="2.-Identify-the-process-you-want-to-communicate-with">2. Identify the process you want to communicate with<a class="anchor-link" href="#2.-Identify-the-process-you-want-to-communicate-with">&#182;</a></h1><ul>
+<h1 id="2.-Identify-the-process-you-communicate-with">2. Identify the process you communicate with<a class="anchor-link" href="#2.-Identify-the-process-you-communicate-with">&#182;</a></h1><ul>
 <li>Processes can be collected into groups.</li>
 <li>Each message is sent in a context, and must be received in the same context.</li>
 </ul>
-<p><code>A group and context together form a communicator.</code></p>
-<p><sup><sub>(*) the context (or ID) that differentiates one communicator from another and the group of processes contained by the communicator</sub></sup></p>
+<blockquote><p>A group and context together form a communicator.</p>
+</blockquote>
+<p><small>(*) the context (or ID) that differentiates one communicator from another and the group of processes contained by the communicator</small></p>
 <ul>
 <li>A process is identified by its rank in the group associated with a communicator.<ul>
-<li>MPI_COMM_WORLD is enough for most applications</li>
+<li><code>MPI_COMM_WORLD</code> is enough for most applications</li>
 </ul>
 </li>
 </ul>
@@ -13871,7 +13876,7 @@ World rank/size: 3/4     New rank/size: 1/2</code></pre>
 <ul>
 <li>Used to assist the receiving process in identifying the message.</li>
 <li>Messages can be screened at the receiving end by specifying a specific tag, or</li>
-<li>not screened by specifying MPI_ANY_TAG as the tag in a receive.</li>
+<li>not screened by specifying <code>MPI_ANY_TAG</code> as the tag in a receive.</li>
 </ul>
 </li>
 <li><p>Some non-MPI message-passing systems have called tags “message types”.</p>
@@ -14032,8 +14037,7 @@ World rank/size: 3/4     New rank/size: 1/2</code></pre>
 <p><img src="./figures/send_recv_proc.png" alt="Send Receive" width="400"/></p>
 <ul>
 <li>Non blocking communication<ul>
-<li>Requires that MPI_Send wait on delivery</li>
-<li>and/or that MPI_Recv return before transfer is complete, and we wait later.</li>
+<li>Send/Recv routines return before transfer is complete, and we wait later.</li>
 </ul>
 </li>
 </ul>
@@ -14094,7 +14098,6 @@ World rank/size: 3/4     New rank/size: 1/2</code></pre>
 </li>
 </ul>
 <pre>
-
 MPI_Request <strong>request</strong>;
 
 MPI_Isend(start, count, datatype, dest, tag, comm, &<strong>request</strong>);
@@ -14171,8 +14174,11 @@ rank: 1 received data [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</code></pre>
 </ul>
 <pre>
 MPI_Waitall(count, <strong>array_of_requests</strong>, array_of_statuses);
+
 MPI_Waitany(count, <strong>array_of_requests</strong>, &index, &status);
-MPI_Waitsome(incount, <strong>array_of_requests</strong>,  &outcount, array_of_indices, array_of_statuses);
+
+MPI_Waitsome(incount, <strong>array_of_requests</strong>,  &outcount, array_of_indices,
+             array_of_statuses);
 </pre><ul>
 <li>There are corresponding versions of test for each of these.</li>
 </ul>
@@ -14206,7 +14212,8 @@ MPI_Waitsome(incount, <strong>array_of_requests</strong>,  &outcount, array_of_i
 <li><p>Non-blocking versions for all operations (MPI_Issend, etc.)</p>
 </li>
 </ul>
-<p><code>MPI_Recv receives messages sent in any mode.</code></p>
+<blockquote><p>MPI_Recv receives messages sent in any mode.</p>
+</blockquote>
 
 </div>
 </div>
