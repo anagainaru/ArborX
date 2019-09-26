@@ -14985,6 +14985,7 @@ Product: (-5.0 40.0)</code></pre>
 <h1 id="MPI_Dims_create">MPI_Dims_create<a class="anchor-link" href="#MPI_Dims_create">&#182;</a></h1><ul>
 <li>Fill in the dims array such that the product of <code>dims[i] for i=0 to ndim-1</code> equals nnodes.</li>
 </ul>
+<p>&nbsp;</p>
 <div class="highlight"><pre><span></span><span class="n">MPI_Dims_create</span><span class="p">(</span><span class="kt">int</span> <span class="n">nnodes</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ndim</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dims</span><span class="p">[])</span>
 </pre></div>
 <ul>
@@ -15116,6 +15117,7 @@ World rank: 0 -- Cart rank: 0</code></pre>
 <h1 id="MPI_Cart_shift">MPI_Cart_shift<a class="anchor-link" href="#MPI_Cart_shift">&#182;</a></h1><ul>
 <li>Returns the ranks of the processes that are a shifted by <strong>disp</strong> steps in coordinate <strong>direction</strong></li>
 </ul>
+<p>&nbsp;</p>
 <div class="highlight"><pre><span></span><span class="n">MPI_Cart_shift</span><span class="p">(</span><span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">,</span> <span class="kt">int</span> <span class="n">direction</span><span class="p">,</span> <span class="kt">int</span> <span class="n">disp</span><span class="p">,</span>
                <span class="kt">int</span> <span class="o">*</span><span class="n">rank_source</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">rank_dest</span><span class="p">)</span>
 </pre></div>
@@ -15137,7 +15139,7 @@ World rank: 0 -- Cart rank: 0</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Example">Example<a class="anchor-link" href="#Example">&#182;</a></h1>
+<h1 id="Example-(8-processes)">Example (8 processes)<a class="anchor-link" href="#Example-(8-processes)">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -15201,8 +15203,7 @@ Dir 1, disp 1 - Src 1 - Dest 1</code></pre>
 </ul>
 </li>
 </ul>
-<h3 id="Reading">Reading<a class="anchor-link" href="#Reading">&#182;</a></h3><p><br/></p>
-<div>
+<h3 id="Reading">Reading<a class="anchor-link" href="#Reading">&#182;</a></h3><div>
     <em>Generic Topology Mapping Strategies for Large-scale Parallel Architectures</em><br/>
 Hoefler and Snir<br/>
    <a href="http://dx.doi.org/10.1145/1995896.1995909"> http://dx.doi.org/10.1145/1995896.1995909</a>
