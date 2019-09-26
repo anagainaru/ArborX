@@ -14861,24 +14861,228 @@ Product: (-5.0 40.0)</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Neighborhood-Collectives">Neighborhood Collectives<a class="anchor-link" href="#Neighborhood-Collectives">&#182;</a></h1><ul>
-<li>Collective operation on an MPI communicator with a defined topology<ul>
-<li>For Cartesian (<code>MPI_CART</code>), immediate neighbors in coordinate directions<ul>
-<li>Cooresponds to using <code>MPI_Cart_shift</code> with disp=1 in each coordinate</li>
+<h1 id="Topologies">Topologies<a class="anchor-link" href="#Topologies">&#182;</a></h1><ul>
+<li><p>A <strong>virtual topology</strong> represents the way that MPI processes communicate</p>
+<ul>
+<li>Nearest neighbor exchange in a mesh</li>
+<li>Recursive doubling in an all-to-all exchange</li>
 </ul>
 </li>
-<li>For Graph (<code>MPI_DIST_GRAPH</code>), immediate neighbors (as returned by <code>MPI_Dist_graph_neighbors</code>)<ul>
-<li>MPI_Neighbor_alltoall</li>
-</ul>
-</li>
-<li>Sends distinct messages to each neighbor</li>
-<li>Receives distinct messages from each neighbor<ul>
-<li><code>MPI_Ineighbor_alltoall</code> for nonblocking version</li>
-<li>Provides an alternative for halo exchanges </li>
-</ul>
+<li><p>A <strong>physical topology</strong> represents that connections between the cores, chips, and nodes in the hardware</p>
 </li>
 </ul>
+<blockquote><p>mapping of the virtual topology onto the physical topology (think of nodes of chips of cores - not trivial)</p>
+</blockquote>
+<h3 id="Topology-mapping-basics">Topology mapping basics<a class="anchor-link" href="#Topology-mapping-basics">&#182;</a></h3><ul>
+<li>Allocation mapping </li>
+<li>Rank reordering</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Topology-Mapping-Basics">Topology Mapping Basics<a class="anchor-link" href="#Topology-Mapping-Basics">&#182;</a></h1><h3 id="Allocation-mapping">Allocation mapping<a class="anchor-link" href="#Allocation-mapping">&#182;</a></h3><ul>
+<li>Up-front specification of communication pattern</li>
+<li>Batch system picks good set of nodes for given topology</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li>Properties:<ul>
+<li>Not supported by current batch systems</li>
+<li>Either predefined allocation, random allocation, or “global bandwidth maximation”</li>
+<li>Not always possible to specify communication pattern upfront</li>
+</ul>
 </li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Topology-Mapping-Basics">Topology Mapping Basics<a class="anchor-link" href="#Topology-Mapping-Basics">&#182;</a></h1><h3 id="Rank-reordering">Rank reordering<a class="anchor-link" href="#Rank-reordering">&#182;</a></h3><ul>
+<li>Change numbering in a given allocation to reduce congestion</li>
+<li>Sometimes automatic</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li>Properties:<ul>
+<li>Always possible, but effect may be limited (e.g., in a bad allocation)</li>
+<li>Allows manual shuffling through MPI process topologies<ul>
+<li>Network topology is not exposed</li>
+</ul>
+</li>
+<li>Data has to be manual shuffled after remapping</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="MPI&#8217;s-Topology-Routines">MPI&#8217;s Topology Routines<a class="anchor-link" href="#MPI&#8217;s-Topology-Routines">&#182;</a></h1><ul>
+<li><p>MPI provides routines to create new communicators that order the process ranks</p>
+</li>
+<li><p>Two types of virtual topology supported:</p>
+<ul>
+<li><strong>Cartesian (regular mesh)</strong></li>
+<li>Graph (several ways to define in MPI)<ul>
+<li>Routine evolved in each version of MPI</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Additional routines provide access to the defined virtual topology</p>
+</li>
+<li>(Virtual) topologies are properties of a communicator<ul>
+<li>Topology routines all create a new communicator with properties of the specified virtual topology</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="MPI_Cart_create">MPI_Cart_create<a class="anchor-link" href="#MPI_Cart_create">&#182;</a></h1><div class="highlight"><pre><span></span><span class="n">MPI_Cart_create</span><span class="p">(</span><span class="n">MPI_Comm</span> <span class="n">oldcomm</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ndim</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dims</span><span class="p">[],</span>
+                <span class="kt">int</span> <span class="n">qperiodic</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">qreorder</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="o">*</span><span class="n">newcomm</span><span class="p">)</span>
+</pre></div>
+<ul>
+<li><p>Creates a new communicator newcomm from oldcomm</p>
+<ul>
+<li>representing an ndim dimensional mesh with sizes dims</li>
+</ul>
+</li>
+<li><p>The mesh is periodic in coordinate direction i if <code>qperiodic[i]</code> is true (torus).</p>
+</li>
+<li><p>The ranks in the new communicator are reordered</p>
+<ul>
+<li>to better match the physical topology</li>
+<li>if qreorder is true</li>
+</ul>
+</li>
+</ul>
+<blockquote><p>Some processes may return MPI_COMM_NULL (Product sum of dims must be &lt;= P)</p>
+</blockquote>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="MPI_Dims_create">MPI_Dims_create<a class="anchor-link" href="#MPI_Dims_create">&#182;</a></h1><div class="highlight"><pre><span></span><span class="n">MPI_Dims_create</span><span class="p">(</span><span class="kt">int</span> <span class="n">nnodes</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ndim</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dims</span><span class="p">[])</span>
+</pre></div>
+<ul>
+<li><p>Fill in the dims array such that the product of <code>dims[i] for i=0 to ndim-1</code> equals nnodes.</p>
+</li>
+<li><p>Any value of <code>dims[i]</code> that is 0 on input will be replaced</p>
+<ul>
+<li>values that are &gt; 0 will not be changed</li>
+</ul>
+</li>
+<li><p>Makes life easier (couldn't find the equivalent in python)</p>
+<ul>
+<li>Some problems might work better with non-square layouts</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Example">Example<a class="anchor-link" href="#Example">&#182;</a></h1><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">p</span><span class="p">;</span>
+
+<span class="n">MPI_Comm_size</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p</span><span class="p">);</span>
+<span class="n">MPI_Dims_create</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">dims</span><span class="p">);</span>
+
+<span class="kt">int</span> <span class="n">periods</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">};</span>
+
+<span class="n">MPI_Comm</span> <span class="n">cart_comm</span><span class="p">;</span>
+<span class="n">MPI_Cart_create</span><span class="p">(</span><span class="n">comm</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">dims</span><span class="p">,</span> <span class="n">periods</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cart_comm</span><span class="p">);</span>
+</pre></div>
+<ul>
+<li>Reorder argument allows for topology mapping<ul>
+<li>Each calling process may have a new rank in the created communicator</li>
+<li>Data has to be remapped manually</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Example-python">Example python<a class="anchor-link" href="#Example-python">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">mpi4py</span> <span class="k">import</span> <span class="n">MPI</span>
+
+<span class="n">comm</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span>
+<span class="n">world_rank</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span>
+<span class="n">world_size</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_size</span><span class="p">()</span>
+<span class="k">assert</span><span class="p">(</span><span class="n">world_size</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)</span>
+
+<span class="n">dims</span> <span class="o">=</span> <span class="p">[</span><span class="n">world_size</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="n">cart_comm</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Create_cart</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">,</span><span class="kc">True</span><span class="p">],</span> <span class="n">reorder</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">new_rank</span> <span class="o">=</span> <span class="n">cart_comm</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;World rank: </span><span class="si">%d</span><span class="s2"> -- Cart rank: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span>
+                <span class="n">world_rank</span><span class="p">,</span> <span class="n">new_rank</span><span class="p">));</span>
+
+<span class="n">cart_comm</span><span class="o">.</span><span class="n">Free</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+<pre><code>World rank: 2 -- Cart rank: 2
+World rank: 1 -- Cart rank: 1
+World rank: 3 -- Cart rank: 3
+World rank: 0 -- Cart rank: 0</code></pre>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Cartesian-Query-Functions">Cartesian Query Functions<a class="anchor-link" href="#Cartesian-Query-Functions">&#182;</a></h1><ul>
+<li><code>MPI_Cartdim_get()</code>
+Gets dimensions of a Cartesian communicator
+ <code>MPI_Cart_get()</code>
+ Gets size of dimensions
+ <code>MPI_Cart_rank()</code>
+ Translate coordinates to rank
+ <code>MPI_Cart_coords()</code>
+ Translate rank to coordinates</li>
 </ul>
 
 </div>
