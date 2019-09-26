@@ -14871,7 +14871,8 @@ Product: (-5.0 40.0)</code></pre>
 <li><p>A <strong>physical topology</strong> represents that connections between the cores, chips, and nodes in the hardware</p>
 </li>
 </ul>
-<blockquote><p>mapping of the virtual topology onto the physical topology (think of nodes of chips of cores - not trivial)</p>
+<blockquote><p>Mapping of the virtual topology onto the physical topology.</p>
+<p>Think of nodes of chips of cores - not trivial</p>
 </blockquote>
 <h3 id="Topology-mapping-basics">Topology mapping basics<a class="anchor-link" href="#Topology-mapping-basics">&#182;</a></h3><ul>
 <li>Allocation mapping </li>
@@ -14888,7 +14889,6 @@ Product: (-5.0 40.0)</code></pre>
 <li>Up-front specification of communication pattern</li>
 <li>Batch system picks good set of nodes for given topology</li>
 </ul>
-<p>&nbsp;</p>
 <ul>
 <li>Properties:<ul>
 <li>Not supported by current batch systems</li>
@@ -14908,7 +14908,6 @@ Product: (-5.0 40.0)</code></pre>
 <li>Change numbering in a given allocation to reduce congestion</li>
 <li>Sometimes automatic</li>
 </ul>
-<p>&nbsp;</p>
 <ul>
 <li>Properties:<ul>
 <li>Always possible, but effect may be limited (e.g., in a bad allocation)</li>
@@ -14923,7 +14922,7 @@ Product: (-5.0 40.0)</code></pre>
 
 </div>
 </div>
-</div>
+</div></section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -14953,15 +14952,16 @@ Product: (-5.0 40.0)</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="MPI_Cart_create">MPI_Cart_create<a class="anchor-link" href="#MPI_Cart_create">&#182;</a></h1><div class="highlight"><pre><span></span><span class="n">MPI_Cart_create</span><span class="p">(</span><span class="n">MPI_Comm</span> <span class="n">oldcomm</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ndim</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dims</span><span class="p">[],</span>
-                <span class="kt">int</span> <span class="n">qperiodic</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">qreorder</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="o">*</span><span class="n">newcomm</span><span class="p">)</span>
-</pre></div>
-<ul>
-<li><p>Creates a new communicator newcomm from oldcomm</p>
-<ul>
+<h1 id="MPI_Cart_create">MPI_Cart_create<a class="anchor-link" href="#MPI_Cart_create">&#182;</a></h1><ul>
+<li>Creates a new communicator newcomm from oldcomm<ul>
 <li>representing an ndim dimensional mesh with sizes dims</li>
 </ul>
 </li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">MPI_Cart_create</span><span class="p">(</span><span class="n">MPI_Comm</span> <span class="n">oldcomm</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ndim</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dims</span><span class="p">[],</span>
+                <span class="kt">int</span> <span class="n">qperiodic</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">qreorder</span><span class="p">,</span> <span class="n">MPI_Comm</span> <span class="o">*</span><span class="n">newcomm</span><span class="p">)</span>
+</pre></div>
+<ul>
 <li><p>The mesh is periodic in coordinate direction i if <code>qperiodic[i]</code> is true (torus).</p>
 </li>
 <li><p>The ranks in the new communicator are reordered</p>
@@ -14971,7 +14971,8 @@ Product: (-5.0 40.0)</code></pre>
 </ul>
 </li>
 </ul>
-<blockquote><p>Some processes may return MPI_COMM_NULL (Product sum of dims must be &lt;= P)</p>
+<blockquote><p>Some processes may return MPI_COMM_NULL.</p>
+<p>Product sum of dims must be &lt;= P</p>
 </blockquote>
 
 </div>
@@ -14980,17 +14981,18 @@ Product: (-5.0 40.0)</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="MPI_Dims_create">MPI_Dims_create<a class="anchor-link" href="#MPI_Dims_create">&#182;</a></h1><div class="highlight"><pre><span></span><span class="n">MPI_Dims_create</span><span class="p">(</span><span class="kt">int</span> <span class="n">nnodes</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ndim</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dims</span><span class="p">[])</span>
+<h1 id="MPI_Dims_create">MPI_Dims_create<a class="anchor-link" href="#MPI_Dims_create">&#182;</a></h1><ul>
+<li>Fill in the dims array such that the product of <code>dims[i] for i=0 to ndim-1</code> equals nnodes.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">MPI_Dims_create</span><span class="p">(</span><span class="kt">int</span> <span class="n">nnodes</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ndim</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dims</span><span class="p">[])</span>
 </pre></div>
 <ul>
-<li><p>Fill in the dims array such that the product of <code>dims[i] for i=0 to ndim-1</code> equals nnodes.</p>
-</li>
 <li><p>Any value of <code>dims[i]</code> that is 0 on input will be replaced</p>
 <ul>
 <li>values that are &gt; 0 will not be changed</li>
 </ul>
 </li>
-<li><p>Makes life easier (couldn't find the equivalent in python)</p>
+<li><p>Makes life easier</p>
 <ul>
 <li>Some problems might work better with non-square layouts</li>
 </ul>
@@ -15003,7 +15005,8 @@ Product: (-5.0 40.0)</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Example">Example<a class="anchor-link" href="#Example">&#182;</a></h1><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">p</span><span class="p">;</span>
+<h1 id="Example">Example<a class="anchor-link" href="#Example">&#182;</a></h1><p><strong>3D torus</strong></p>
+<div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">p</span><span class="p">;</span>
 
 <span class="n">MPI_Comm_size</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p</span><span class="p">);</span>
 <span class="n">MPI_Dims_create</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">dims</span><span class="p">);</span>
@@ -15040,16 +15043,16 @@ Product: (-5.0 40.0)</code></pre>
 
 <span class="n">comm</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span>
 <span class="n">world_rank</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span>
-<span class="n">world_size</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_size</span><span class="p">()</span>
-<span class="k">assert</span><span class="p">(</span><span class="n">world_size</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">size</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_size</span><span class="p">()</span>
 
-<span class="n">dims</span> <span class="o">=</span> <span class="p">[</span><span class="n">world_size</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
-<span class="n">cart_comm</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Create_cart</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">,</span><span class="kc">True</span><span class="p">],</span> <span class="n">reorder</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dims</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">Compute_dims</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">cart_comm</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Create_cart</span><span class="p">(</span>
+        <span class="n">dims</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">,</span><span class="kc">True</span><span class="p">],</span> <span class="n">reorder</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">new_rank</span> <span class="o">=</span> <span class="n">cart_comm</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;World rank: </span><span class="si">%d</span><span class="s2"> -- Cart rank: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span>
-                <span class="n">world_rank</span><span class="p">,</span> <span class="n">new_rank</span><span class="p">));</span>
+    <span class="n">world_rank</span><span class="p">,</span> <span class="n">new_rank</span><span class="p">));</span>
 
 <span class="n">cart_comm</span><span class="o">.</span><span class="n">Free</span><span class="p">()</span>
 </pre></div>
@@ -15075,15 +15078,106 @@ World rank: 0 -- Cart rank: 0</code></pre>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Cartesian-Query-Functions">Cartesian Query Functions<a class="anchor-link" href="#Cartesian-Query-Functions">&#182;</a></h1><ul>
-<li><code>MPI_Cartdim_get()</code>
-Gets dimensions of a Cartesian communicator
- <code>MPI_Cart_get()</code>
- Gets size of dimensions
- <code>MPI_Cart_rank()</code>
- Translate coordinates to rank
- <code>MPI_Cart_coords()</code>
- Translate rank to coordinates</li>
+<li>Determine neighbor ranks<ul>
+<li>Can be computed from rank (in the cart_comm), dims, and periods<ul>
+<li>Ordering defined in MPI</li>
+<li>See Section 7.5 in MPI-3 Standard</li>
 </ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><code>MPI_Cartdim_get()</code><ul>
+<li>Gets dimensions of a Cartesian communicator</li>
+</ul>
+</li>
+<li><code>MPI_Cart_get()</code><ul>
+<li>Gets size of dimensions</li>
+</ul>
+</li>
+<li><code>MPI_Cart_rank()</code><ul>
+<li>Translate coordinates to rank</li>
+</ul>
+</li>
+<li><code>MPI_Cart_coords()</code><ul>
+<li>Translate rank to coordinates</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="MPI_Cart_shift">MPI_Cart_shift<a class="anchor-link" href="#MPI_Cart_shift">&#182;</a></h1><ul>
+<li>Returns the ranks of the processes that are a shifted by <strong>disp</strong> steps in coordinate <strong>direction</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">MPI_Cart_shift</span><span class="p">(</span><span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">,</span> <span class="kt">int</span> <span class="n">direction</span><span class="p">,</span> <span class="kt">int</span> <span class="n">disp</span><span class="p">,</span>
+               <span class="kt">int</span> <span class="o">*</span><span class="n">rank_source</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">rank_dest</span><span class="p">)</span>
+</pre></div>
+<ul>
+<li>Useful for nearest neighbor communication in the coordinate directions<ul>
+<li>Dimensions are numbered from 0 to ndims-1</li>
+<li>Displacement indicates neighbor distance (-1, 1, 2)</li>
+<li>May return MPI_PROC_NULL<ul>
+<li>The source or destination for the shift is out of range</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="./figures/shift.png" alt="MPI_shift" align="right" width="300"/></p>
+<h1 id="Example">Example<a class="anchor-link" href="#Example">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ndim</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="n">dims</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">Compute_dims</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">ndim</span><span class="p">)</span>
+<span class="n">cart_comm</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Create_cart</span><span class="p">(</span>
+        <span class="n">dims</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">,</span><span class="kc">True</span><span class="p">],</span> <span class="n">reorder</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">new_rank</span> <span class="o">=</span> <span class="n">cart_comm</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">new_rank</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cart dim: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">dims</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndim</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">source</span><span class="p">,</span> <span class="n">dest</span> <span class="o">=</span> <span class="n">cart_comm</span><span class="o">.</span><span class="n">Shift</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">new_rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dir </span><span class="si">%d</span><span class="s2">, disp </span><span class="si">%d</span><span class="s2"> - Src </span><span class="si">%d</span><span class="s2"> - Dest </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span>
+                <span class="n">i</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">));</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+<pre><code>Cart dim: [4, 2]
+Dir 0, disp -1 - Src 2 - Dest 6
+Dir 0, disp 1 - Src 6 - Dest 2
+Dir 1, disp -1 - Src 1 - Dest 1
+Dir 1, disp 1 - Src 1 - Dest 1</code></pre>
 
 </div>
 </div>
@@ -15248,6 +15342,7 @@ Gets dimensions of a Cartesian communicator
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Useful-links">Useful links<a class="anchor-link" href="#Useful-links">&#182;</a></h1><p>mpi4py</p>
 <ul>
+<li>github: <a href="https://github.com/mpi4py/mpi4py">https://github.com/mpi4py/mpi4py</a></li>
 <li>download and brief tutorial: www.mpi4py.com</li>
 <li>complete tutorial: <a href="https://www.bu.edu/pasi/files/2011/01/Lisandro-Dalcin-mpi4py.pdf">https://www.bu.edu/pasi/files/2011/01/Lisandro-Dalcin-mpi4py.pdf</a>
 <a href="https://buildmedia.readthedocs.org/media/pdf/mpi4py/3.0.0/mpi4py.pdf">https://buildmedia.readthedocs.org/media/pdf/mpi4py/3.0.0/mpi4py.pdf</a></li>
