@@ -14150,6 +14150,7 @@ MPI_Wait(&<strong>request</strong>, &status);
 <li>One can also test without waiting:</li>
 </ul>
 <pre>
+
 MPI_Test(&<strong>request</strong>, &flag, &status); 
 </pre>
 </div>
@@ -14214,6 +14215,7 @@ rank 0: received data [0 2 4 6 8 10 12 14 16 18]</code></pre>
 <li>Waiting on multiple requests:</li>
 </ul>
 <pre>
+
 MPI_Waitall(count, <strong>array_of_requests</strong>, array_of_statuses);
 
 MPI_Waitany(count, <strong>array_of_requests</strong>, &index, &status);
@@ -14253,8 +14255,7 @@ MPI_Waitsome(incount, <strong>array_of_requests</strong>,  &outcount, array_of_i
 <li><p>Non-blocking versions for all operations (MPI_Issend, etc.)</p>
 </li>
 </ul>
-<blockquote><p>MPI_Recv receives messages sent in any mode.</p>
-</blockquote>
+<p><code> MPI_Recv receives messages sent in any mode. </code></p>
 
 </div>
 </div>
@@ -14290,8 +14291,7 @@ MPI_Waitsome(incount, <strong>array_of_requests</strong>,  &outcount, array_of_i
   <span class="n">MPI_Status</span> <span class="o">*</span><span class="n">status</span>
 <span class="p">);</span>
 </pre></div>
-<p><strong> Both send and receive must be successful for the operation to succeed.</strong></p>
-
+<h3 id="Both-send-and-receive-must-be-successful-for-the-operation-to-succeed.">Both send and receive must be successful for the operation to succeed.<a class="anchor-link" href="#Both-send-and-receive-must-be-successful-for-the-operation-to-succeed.">&#182;</a></h3>
 </div>
 </div>
 </div></section><section>
