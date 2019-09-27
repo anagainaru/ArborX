@@ -14374,9 +14374,9 @@ rank 3 got data from 2</code></pre>
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Collective-communication">Collective communication<a class="anchor-link" href="#Collective-communication">&#182;</a></h1><ul>
 <li>From the point of view of functionalities, there are three classes of operations<ul>
-<li>Synchronization (Barrier)</li>
-<li>Data movement (Broadcast, Gather, Scatter, Allgather, Alltoall)</li>
-<li>Collective computation (Reduce, AllReduce, Scan, Exscan, Reduce_scatter)</li>
+<li><strong>Synchronization</strong>: Barrier</li>
+<li><strong>Data movement</strong>: Broadcast, Gather, Scatter, Allgather, Alltoall</li>
+<li><strong>Collective computation</strong>: Reduce, AllReduce, Scan, Exscan, Reduce_scatter</li>
 </ul>
 </li>
 </ul>
@@ -14450,7 +14450,6 @@ rank 0: after barrier</code></pre>
 </ul>
 </li>
 </ul>
-<hr>
 <ul>
 <li><strong>All to all</strong><ul>
 <li>Allgather</li>
@@ -14458,10 +14457,8 @@ rank 0: after barrier</code></pre>
 </ul>
 </li>
 </ul>
-<blockquote><p>All collective operations must be called by all processes in the communicator</p>
-</blockquote>
-<p>Each process can get different data with the {function}v variant of each method</p>
-
+<p><cite> All collective operations must be called by all processes in the communicator </cite></p>
+<h3 id="Each-process-can-get-different-data-with-the-{function}v-variant-of-each-method">Each process can get different data with the {function}v variant of each method<a class="anchor-link" href="#Each-process-can-get-different-data-with-the-{function}v-variant-of-each-method">&#182;</a></h3>
 </div>
 </div>
 </div></section><section>
