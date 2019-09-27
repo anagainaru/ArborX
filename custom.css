@@ -64,12 +64,6 @@
     margin-top: 20px;
 }
 
-.reveal blockquote:before,
-.reveal blockquote:after,
-.reveal q:before,
-.reveal q:after {
-	content: "";
-}
 
 .reveal blockquote {
   color: #888;
