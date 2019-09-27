@@ -50,7 +50,7 @@
     font-family: 'Roboto', sans-serif;
     font-weight: 700;
     line-height: 56px;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     margin-top: 20px;
 }
 
@@ -87,7 +87,7 @@
 .reveal cite {
   color: #ddab56;
   font-family: 'Roboto', sans-serif;
-  font-style: bold;
+  font-weight: bold;
   font-size: 18px;
   margin-top: 10px;
   margin-bottom: 10px;
