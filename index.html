@@ -14074,7 +14074,8 @@ World rank/size: 3/4 -- New rank/size: 1/2</code></pre>
 <p><img src="./figures/send_recv_proc.png" alt="Send Receive" width="400"/></p>
 <ul>
 <li>Non blocking communication<ul>
-<li>Send/Recv routines return before transfer is complete, and we wait later.</li>
+<li>Send/Recv routines return before transfer is complete</li>
+<li>and we wait later.</li>
 </ul>
 </li>
 </ul>
@@ -14096,7 +14097,7 @@ World rank/size: 3/4 -- New rank/size: 1/2</code></pre>
 </ul>
 <p><img src="./figures/blocking_deadlock.png" alt="Deadlock" width="500"/></p>
 <ul>
-<li>This is called “unsafe” because it depends on the availability of system buffers </li>
+<li>This is called <strong>unsafe</strong> because it depends on the availability of system buffers </li>
 </ul>
 
 </div>
@@ -14114,10 +14115,9 @@ World rank/size: 3/4 -- New rank/size: 1/2</code></pre>
 </ul>
 <ul>
 <li>Use non-blocking operations<ul>
-<li>Safe, but</li>
-<li>not necessarily asynchronous</li>
-<li>not necessarily concurrent</li>
-<li>not necessarily faster </li>
+<li><strong>Safe</strong>, but</li>
+<li>does not guarantee to be asynchronous or concurrent</li>
+<li>not always faster </li>
 </ul>
 </li>
 </ul>
@@ -14130,11 +14130,14 @@ World rank/size: 3/4 -- New rank/size: 1/2</code></pre>
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="MPI-Non-blocking-operations">MPI Non-blocking operations<a class="anchor-link" href="#MPI-Non-blocking-operations">&#182;</a></h1><ul>
 <li>Return immediately <ul>
-<li>give “request handles” that can be tested and waited on for completion.</li>
+<li>give <strong>request handles</strong> that can be tested and waited on for completion.</li>
 </ul>
 </li>
 </ul>
+<div class="highlight">
 <pre>
+
+
 MPI_Request <strong>request</strong>;
 
 MPI_Isend(start, count, datatype, dest, tag, comm, &<strong>request</strong>);
@@ -14142,7 +14145,8 @@ MPI_Isend(start, count, datatype, dest, tag, comm, &<strong>request</strong>);
 MPI_Irecv(start, count, datatype, dest, tag, comm, &<strong>request</strong>);
 
 MPI_Wait(&<strong>request</strong>, &status);
-</pre><ul>
+</pre>
+</div><ul>
 <li>One can also test without waiting:</li>
 </ul>
 <pre>
@@ -15521,7 +15525,7 @@ require(
 	<div id="footer-left">Ana Gainaru</div>
 	<div id="footer-middle">Algorithms for parallel computing - Lecture on MPI</div>
 	<div id="footer-right">Oct 1st/3rd, 2019</div>
-	<div id="logo"><img src="figures/logo.jpg" width=120></div>
+	<div id="logo"><img src="figures/logo.png" width=120></div>
     </div>
 </div>
 
