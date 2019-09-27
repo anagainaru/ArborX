@@ -13349,28 +13349,28 @@ CS6320 Algorithms for parallel computing
 <h1 id="In-These-Lectures">In These Lectures<a class="anchor-link" href="#In-These-Lectures">&#182;</a></h1><pre>
 <small>
 
-1. Introduction to MPI 
+<h4>1. Introduction to MPI </h4>
     - Library and implementation characteristics
     - MPI for python
     - Error handling
 
-2. Blocking point-to-point communication
+<h4>2. Blocking point-to-point communication</h4>
     - Sending and receiving with <strong>MPI_Send</strong> and <strong>MPI_Recv</strong>
     - Dynamic receiving with <strong>MPI_Probe</strong> and <strong>MPI_Status</strong>
     - Groups and communicators
 
-3. Non-blocking communication
+<h4>3. Non-blocking communication</h4>
 
-4. Collective communication
+<h4>4. Collective communication</h4>
     - Synchronization (<strong>Barrier</strong>)
     - Data movement (<strong>Broadcast, Gather, Scatter, Allgather, Alltoall</strong>)
     - Collective computation (<strong>Reduce, AllReduce, Scan, Exscan, Reduce_scatter</strong>)
     - Define your own collective routine
     - Non-Blocking Collective Operations
 
-5. Topology mapping and neighborhood collectives
+<h4>5. Topology mapping and neighborhood collectives</h4>
 
-6. Profiling MPI applications
+<h4>6. Profiling MPI applications</h4>
 
 
 </small>
@@ -13602,8 +13602,7 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="MPI-Initialization">MPI Initialization<a class="anchor-link" href="#MPI-Initialization">&#182;</a></h1><p><cite> MPI_Init_thread is used since MPI-2 </cite></p>
-<ul>
+<h1 id="MPI-Initialization">MPI Initialization<a class="anchor-link" href="#MPI-Initialization">&#182;</a></h1><ul>
 <li><p>Programmer can request the level of thread safety required for the program</p>
 <ul>
 <li>E.g. Needed to use OpenMP with MPI 
@@ -13627,6 +13626,7 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 </li>
 <li><code>MPI_THREAD_MULTIPLE</code> Multiple threads may call MPI, with no restrictions.</li>
 </ul>
+<p><cite> MPI_Init_thread is used since MPI-2 </cite></p>
 
 </div>
 </div>
