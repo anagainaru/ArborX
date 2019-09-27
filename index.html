@@ -14474,11 +14474,9 @@ rank 0: after barrier</code></pre>
 </ul>
 </li>
 <li><p>Message tags are not used</p>
-<ul>
-<li>Use different communicators to separate collective operations on the same process</li>
-</ul>
 </li>
 </ul>
+<p><cite> Use different communicators to separate collective operations on the same process </cite></p>
 
 </div>
 </div>
@@ -14560,8 +14558,7 @@ rank 0: after barrier</code></pre>
 </ul>
 <p><code>MPI_Scatter(sbuf, 1, MPI_INT, rbuf, 100, MPI_INT, root, comm);</code></p>
 <div align="right"><small>(*) sends one integer to each process</small></div><ul>
-<li><p>Sending a different number of items to each process</p>
-<ul>
+<li>Sending a different number of items to each process<ul>
 <li>Example: <code>MPI_Scatterv</code></li>
 <li>Routines with “v” (for vector) at the end <ul>
 <li>allow to specify a different number of elements for each destination/source</li>
@@ -14569,9 +14566,8 @@ rank 0: after barrier</code></pre>
 </li>
 </ul>
 </li>
-<li><p>Efficient algorithms exist for these cases (not alltoall), though not as fast as the simpler, basic routines</p>
-</li>
 </ul>
+<p><cite> Efficient algorithms exist for these cases (not alltoall), though not as fast as the simpler, basic routines </cite></p>
 <p><strong>Variant alltoallw:</strong></p>
 <ul>
 <li>Allows different datatypes, counts, and displacements for each partner</li>
