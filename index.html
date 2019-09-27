@@ -13740,8 +13740,7 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="MPI-for-python">MPI for python<a class="anchor-link" href="#MPI-for-python">&#182;</a></h1><p><cite> Automatic MPI finalization combined with unhandled exceptions can lead to deadlocks. </cite></p>
-<p>Example</p>
+<h1 id="MPI-for-python">MPI for python<a class="anchor-link" href="#MPI-for-python">&#182;</a></h1><h3 id="Automatic-MPI-finalization-+-unhandled-exceptions-can-lead-to-deadlocks.">Automatic MPI finalization + unhandled exceptions can lead to deadlocks.<a class="anchor-link" href="#Automatic-MPI-finalization-+-unhandled-exceptions-can-lead-to-deadlocks.">&#182;</a></h3><p>Example</p>
 
 </div>
 </div>
@@ -13831,8 +13830,7 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 </ul>
 </li>
 </ul>
-<blockquote><p>mpi4py uses protocols for packing and unpacking a Python object structure</p>
-</blockquote>
+<p><cite> mpi4py uses protocols for packing and unpacking a Python object structure </cite></p>
 
 </div>
 </div>
@@ -13844,8 +13842,7 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 <li>Processes can be collected into groups.</li>
 <li>Each message is sent in a context, and must be received in the same context.</li>
 </ul>
-<blockquote><p>A group and context together form a communicator (*).</p>
-</blockquote>
+<p><cite>A group and context together form a communicator (*) </cite></p>
 <p><small>(*) the context (or ID) that differentiates one communicator from another and the group of processes contained by the communicator</small></p>
 <ul>
 <li>A process is identified by its rank in the group associated with a communicator.<ul>
@@ -13853,6 +13850,7 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 </ul>
 </li>
 </ul>
+<p>&nbsp;</p>
 <div class="highlight"><pre><span></span><span class="n">MPI_Comm_split</span><span class="p">(</span>
     <span class="n">MPI_Comm</span> <span class="n">comm</span><span class="p">,</span>
     <span class="kt">int</span> <span class="n">color</span><span class="p">,</span>             <span class="c1">// for split</span>
