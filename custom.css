@@ -64,6 +64,13 @@
     margin-top: 20px;
 }
 
+.reveal blockquote:before,
+.reveal blockquote:after,
+.reveal q:before,
+.reveal q:after {
+	content: "";
+}
+
 .reveal blockquote {
   color: #888;
   font-family: 'Roboto', sans-serif;
@@ -71,6 +78,8 @@
   margin-top: 10px;
   margin-bottom: 10px;
   margin-left: 50px;
+  margin-right: 0px;
+  padding-right: 0px;
   padding-left: 15px;
   border-left: 5px solid #888;
 }
