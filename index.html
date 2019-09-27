@@ -13238,7 +13238,7 @@ a.anchor-link {
 
 <div class="reveal">
 <div class="slides">
-<section><section data-background="figures/vu_background.jpg" data-background-size="contain" data-background-position="right">
+<section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -13246,7 +13246,7 @@ a.anchor-link {
 <p>&nbsp;</p>
 <div>
 Lectures by: Ana Gainaru <br/>
-CS6320 <em>Algorithms for parallel computing</em>
+CS6320 Algorithms for parallel computing
 </div>
 </div>
 </div>
@@ -13254,7 +13254,7 @@ CS6320 <em>Algorithms for parallel computing</em>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Parallel-Programming">Parallel Programming<a class="anchor-link" href="#Parallel-Programming">&#182;</a></h1><p>&nbsp;</p>
+<h1 id="Parallel-Programming">Parallel Programming<a class="anchor-link" href="#Parallel-Programming">&#182;</a></h1><p>&nbsp;</p>
 <p><img src="./figures/parallel_arch.png" alt="Architecture" align="center" width="500"/></p>
 
 </div>
@@ -13309,8 +13309,8 @@ CS6320 <em>Algorithms for parallel computing</em>
 </li>
 <li><p>Multi-process communication (Collective operations)</p>
 <ul>
-<li>Programmer selects subset of processes</li>
 <li><em>Algorithm (performance) defined by the programming language</em></li>
+<li>Programmer selects subset of processes</li>
 </ul>
 </li>
 </ul>
@@ -13356,16 +13356,16 @@ CS6320 <em>Algorithms for parallel computing</em>
     - Error handling
 
 2. Blocking point-to-point communication
-    - Sending and receiving with <code>MPI_Send</code> and <code>MPI_Recv</code>
-    - Dynamic receiving with <code>MPI_Probe</code> and <code>MPI_Status</code>
+    - Sending and receiving with <strong>MPI_Send</strong> and <strong>MPI_Recv</strong>
+    - Dynamic receiving with <strong>MPI_Probe</strong> and <strong>MPI_Status</strong>
     - Groups and communicators
 
 3. Non-blocking communication
 
 4. Collective communication
-    - Synchronization (Barrier)
-    - Data movement (Broadcast, Gather, Scatter, Allgather, Alltoall)
-    - Collective computation (Reduce, AllReduce, Scan, Exscan, Reduce_scatter)
+    - Synchronization (<strong>Barrier</strong>)
+    - Data movement (<strong>Broadcast, Gather, Scatter, Allgather, Alltoall</strong>)
+    - Collective computation (<strong>Reduce, AllReduce, Scan, Exscan, Reduce_scatter</strong>)
     - Define your own collective routine
     - Non-Blocking Collective Operations
 
@@ -13603,7 +13603,9 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="MPI-Initialization">MPI Initialization<a class="anchor-link" href="#MPI-Initialization">&#182;</a></h1><h4 id="MPI_Init_thread-is-used-since-MPI-2">MPI_Init_thread is used since MPI-2<a class="anchor-link" href="#MPI_Init_thread-is-used-since-MPI-2">&#182;</a></h4><ul>
+<h1 id="MPI-Initialization">MPI Initialization<a class="anchor-link" href="#MPI-Initialization">&#182;</a></h1><blockquote><p>MPI_Init_thread is used since MPI-2</p>
+</blockquote>
+<ul>
 <li><p>Programmer can request the level of thread safety required for the program</p>
 <ul>
 <li>E.g. Needed to use OpenMP with MPI 
@@ -13741,8 +13743,7 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="MPI-for-python">MPI for python<a class="anchor-link" href="#MPI-for-python">&#182;</a></h1><blockquote><p>Automatic MPI finalization + unhandled exceptions can lead to deadlocks.</p>
-</blockquote>
+<h1 id="MPI-for-python">MPI for python<a class="anchor-link" href="#MPI-for-python">&#182;</a></h1><h3 id="Automatic-MPI-finalization-+-unhandled-exceptions-can-lead-to-deadlocks.">Automatic MPI finalization + unhandled exceptions can lead to deadlocks.<a class="anchor-link" href="#Automatic-MPI-finalization-+-unhandled-exceptions-can-lead-to-deadlocks.">&#182;</a></h3><p>Example</p>
 
 </div>
 </div>
@@ -13786,7 +13787,7 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 </li>
 </ul>
 <p>&nbsp;</p>
-<div class="highlight"><pre><span></span>mpiexec -n numprocs python -m mpi4py pyfile <span class="o">[</span>arg<span class="o">]</span>
+<div class="highlight"><pre><span></span>mpiexec -n <span class="si">${</span><span class="nv">NUM_PROCS</span><span class="si">}</span> python -m mpi4py <span class="si">${</span><span class="nv">PYTHON_FILE</span><span class="si">}</span> <span class="o">[</span><span class="si">${</span><span class="nv">ARG</span><span class="si">}</span><span class="o">]</span>
 </pre></div>
 
 </div>
@@ -13816,7 +13817,7 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="1.-Describing-the-data">1. Describing the data<a class="anchor-link" href="#1.-Describing-the-data">&#182;</a></h1><h4 id="The-message-buffer-is-described-by-(start,-count,-datatype)">The message buffer is described by <code>(start, count, datatype)</code><a class="anchor-link" href="#The-message-buffer-is-described-by-(start,-count,-datatype)">&#182;</a></h4><ul>
+<h1 id="1.-Describing-the-data">1. Describing the data<a class="anchor-link" href="#1.-Describing-the-data">&#182;</a></h1><h3 id="The-message-buffer-is-described-by-(start,-count,-datatype)">The message buffer is described by <code>(start, count, datatype)</code><a class="anchor-link" href="#The-message-buffer-is-described-by-(start,-count,-datatype)">&#182;</a></h3><ul>
 <li><p>Datatype can be:</p>
 <ul>
 <li>Predefined corresponding to a data type from the language (MPI_CHAR, MPI_INT, MPI_DOUBLE, etc)</li>
@@ -13832,7 +13833,8 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 </ul>
 </li>
 </ul>
-<p>mpi4py uses protocols for packing and unpacking a Python object structure</p>
+<blockquote><p>mpi4py uses protocols for packing and unpacking a Python object structure</p>
+</blockquote>
 
 </div>
 </div>
@@ -13844,7 +13846,7 @@ My values for A: [0, 3, 6, 9, 12]</code></pre>
 <li>Processes can be collected into groups.</li>
 <li>Each message is sent in a context, and must be received in the same context.</li>
 </ul>
-<blockquote><p>A group and context together form a communicator.</p>
+<blockquote><p>A group and context together form a communicator (*).</p>
 </blockquote>
 <p><small>(*) the context (or ID) that differentiates one communicator from another and the group of processes contained by the communicator</small></p>
 <ul>
@@ -15522,7 +15524,7 @@ require(
 	<div id="footer-left">Ana Gainaru</div>
 	<div id="footer-middle">Algorithms for parallel computing - Lecture on MPI</div>
 	<div id="footer-right">Oct 1st/3rd, 2019</div>
-	<div id="logo"><img src="figures/logo.png" width=120></div>
+	<div id="logo"><img src="figures/logo.jpg" width=120></div>
     </div>
 </div>
 
@@ -15541,6 +15543,5 @@ require(
 </script>
 
 </body>
-
 
 </html>
