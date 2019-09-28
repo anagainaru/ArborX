@@ -14113,14 +14113,12 @@ World rank/size: 3/4 -- New rank/size: 1/2</code></pre>
         <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">3.14</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
 <span class="n">mytype</span> <span class="o">=</span> <span class="n">definetype</span><span class="p">()</span>
-<span class="n">num</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32, double&quot;</span><span class="p">)</span>
-
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32, double&quot;</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
     <span class="n">comm</span><span class="o">.</span><span class="n">Recv</span><span class="p">([</span><span class="n">data</span><span class="p">,</span> <span class="n">mytype</span><span class="p">],</span> <span class="n">source</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 <span class="k">elif</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-    <span class="n">fill_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span>
+    <span class="n">fill_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
     <span class="n">comm</span><span class="o">.</span><span class="n">Send</span><span class="p">([</span><span class="n">data</span><span class="p">,</span> <span class="n">mytype</span><span class="p">],</span> <span class="n">dest</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 
