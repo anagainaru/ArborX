@@ -65,19 +65,6 @@
 }
 
 
-.reveal blockquote {
-  color: #888;
-  font-family: 'Roboto', sans-serif;
-  font-style: normal 24px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-left: 50px;
-  margin-right: 0px;
-  padding-right: 0px;
-  padding-left: 15px;
-  border-left: 5px solid #888;
-}
-
 .reveal cite {
   color: #ddab56;
   font-family: 'Roboto', sans-serif;
@@ -94,7 +81,7 @@
   color: #ddab56;
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 14px;
   border-left: 5px solid #ddab56;
   margin-left: 50px;
   padding-left: 15px;
