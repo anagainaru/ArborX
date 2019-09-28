@@ -14567,7 +14567,7 @@ rank 0: after barrier</code></pre>
 </ul>
 </li>
 </ul>
-<p><cite> Efficient algorithms exist for these cases (not alltoall), not as fast as the simpler, basic routines </cite></p>
+<div class="box"> Efficient algorithms exist for these cases (not alltoall), not as fast as the simpler, basic routines </div><p>&nbsp;</p>
 <p><strong>Variant alltoallw:</strong></p>
 <ul>
 <li>Allows different datatypes, counts, and displacements for each partner</li>
@@ -14687,8 +14687,7 @@ rank 0: after barrier</code></pre>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Collective-computation">Collective computation<a class="anchor-link" href="#Collective-computation">&#182;</a></h1><p><img src="./figures/reduction_all.png" alt="Collectives"></p>
-<p><cite> Allreduce, Exscan, Reduce, Reduce_scatter, and Scan take both built-in and user-defined combiner functions. </cite></p>
-<h2 id="All-collectives">All collectives<a class="anchor-link" href="#All-collectives">&#182;</a></h2><ul>
+<div class="box"> Allreduce, Exscan, Reduce, Reduce_scatter, and Scan take both built-in and user-defined combiner functions. </div><h2 id="All-collectives">All collectives<a class="anchor-link" href="#All-collectives">&#182;</a></h2><ul>
 <li>All versions deliver results to all participating processes</li>
 <li>Most routines accept both intra- and intercommunicators<ul>
 <li>Intercommunicator versions are collective between two groups of processes </li>
