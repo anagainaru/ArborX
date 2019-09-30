@@ -15439,7 +15439,7 @@ Hoefler and Snir<br/>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
-<li>PMPI allows selective replacement of MPI routines at link time <ul>
+<li>PMPI allows selective interception of MPI routines at link time <ul>
 <li>No need to recompile (for C and Fortran)</li>
 <li>Interposition library contains wrapper functions</li>
 </ul>
@@ -15447,17 +15447,12 @@ Hoefler and Snir<br/>
 </ul>
 <p><img src="./figures/pmpi.png" alt="PMPI" width="600"/></p>
 <ul>
-<li>MPI library interposition<ul>
-<li>Allows interception of all MPI calls at runtime</li>
-<li>Program is linked to interposition library</li>
+<li>Program is linked to interposition library<ul>
 <li>All functions are available under two names: MPI_xxx and PMPI_xxx<ul>
-<li>MPI_xxx symbols are weak, can be over-written by interposition library</li>
+<li>MPI_xxx symbols are weak, can be over-written</li>
 </ul>
 </li>
-<li>Measurement code in the interposition library measures <ul>
-<li>begin, end, transmitted data, etc… and calls corresponding PMPI routine.</li>
-</ul>
-</li>
+<li>Measurement code in the interposition library measures </li>
 </ul>
 </li>
 </ul>
@@ -15528,7 +15523,7 @@ Hoefler and Snir<br/>
 
 </div>
 </div>
-</div>
+</div></section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -15539,8 +15534,9 @@ Hoefler and Snir<br/>
 </ul>
 </li>
 </ul>
-<p><small> Intel Trace Analyzer: https://researchcomputing.princeton.edu/faq/using-intel-trace-analyze </small></p>
-<p><small> VAMPIR: https://vampir.eu/ </small></p>
+<p><img src="./figures/vampir.png" alt="Vampir" align="right" width="200"/></p>
+<p>Intel Trace Analyzer: <a href="https://researchcomputing.princeton.edu/faq/using-intel-trace-analyze">https://researchcomputing.princeton.edu/faq/using-intel-trace-analyze</a></p>
+<p>VAMPIR: <a href="https://vampir.eu/">https://vampir.eu/</a></p>
 <h3 id="Profiling">Profiling<a class="anchor-link" href="#Profiling">&#182;</a></h3><p>ParaProf: <a href="http://www.cs.uoregon.edu/research/tau/vihps14/ParaProf.pdf">http://www.cs.uoregon.edu/research/tau/vihps14/ParaProf.pdf</a></p>
 <p>cprofile module in python</p>
 
