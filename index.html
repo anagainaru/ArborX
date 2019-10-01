@@ -13255,12 +13255,12 @@ Lectures by: Ana Gainaru <br/>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Slides">Slides<a class="anchor-link" href="#Slides">&#182;</a></h1><ul>
-<li>Online at: <a href="https://anagainaru.github.io/ArborX/#/">https://anagainaru.github.io/ArborX/#/</a></li>
+<li>Online at: <a href="https://anagainaru.github.io/MPI_Lectures">https://anagainaru.github.io/MPI_Lectures</a></li>
 </ul>
 <p>&nbsp;</p>
 <h3 id="Code-from-slide-available-to-download">Code from slide available to download<a class="anchor-link" href="#Code-from-slide-available-to-download">&#182;</a></h3><ul>
 <li><a href="https://github.com/anagainaru/MPI_Lectures">https://github.com/anagainaru/MPI_Lectures</a><ul>
-<li>Python code</li>
+<li>Tested on python2 and python3</li>
 </ul>
 </li>
 </ul>
@@ -13296,7 +13296,7 @@ Lectures by: Ana Gainaru <br/>
 </li>
 <li><p><code>SPMD</code> (single program, multiple data) not synchronized at individual operation level</p>
 <ul>
-<li>SPMD is equivalent to MIMD since each MIMD program can be made od SPMD </li>
+<li>SPMD is equivalent to MIMD since each MIMD program can be made of SPMD </li>
 </ul>
 </li>
 </ul>
@@ -13925,7 +13925,29 @@ World rank/size: 3/4 -- New rank/size: 1/2</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="2.-Describe-the-data">2. Describe the data<a class="anchor-link" href="#2.-Describe-the-data">&#182;</a></h1><ul>
+<h1 id="Why-datatypes?">Why datatypes?<a class="anchor-link" href="#Why-datatypes?">&#182;</a></h1><ul>
+<li>Since all data is labeled by type, an MPI implementation can support communication between processes on machines with very different memory representations and lengths of elementary datatypes (heterogeneous communication).</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li>Specifying application-oriented layout of data in memory<ul>
+<li>can reduce memory-to-memory copies in the implementation</li>
+<li>allows the use of special hardware (scatter/gather) when available</li>
+</ul>
+</li>
+<li>Specifying application-oriented layout of data on a file<ul>
+<li>can reduce system calls and physical disk I/O</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="How-to-create-a-new-datatype">How to create a new datatype<a class="anchor-link" href="#How-to-create-a-new-datatype">&#182;</a></h1><ul>
 <li>Create an MPI datatype from a general set of datatypes, displacements, and block sizes</li>
 </ul>
 <div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">MPI_Type_create_struct</span><span class="p">(</span>
@@ -15496,7 +15518,7 @@ Hoefler and Snir<br/>
 <h1 id="Example-Bcast-time">Example Bcast time<a class="anchor-link" href="#Example-Bcast-time">&#182;</a></h1>
 </div>
 </div>
-</div><div class="fragment">
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
@@ -15509,10 +15531,67 @@ Hoefler and Snir<br/>
 <span class="n">size</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_size</span><span class="p">()</span>
 <span class="n">rank</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span>
 
-<span class="n">comm</span><span class="o">.</span><span class="n">barrier</span><span class="p">();</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">rank</span> <span class="o">*</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)])</span>
+
 <span class="n">local_wt</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">Wtime</span><span class="p">();</span>
+<span class="n">comm</span><span class="o">.</span><span class="n">Bcast</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
+<span class="n">local_wt</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">Wtime</span><span class="p">()</span> <span class="o">-</span> <span class="n">local_wt</span><span class="p">;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bcast time </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">wt</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li><strong>Why is this not accurate?</strong></li>
+<li><strong>What is the output?</strong></li>
+</ul>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+<pre><code>Bcast time 0.003616
+Bcast tiBcast time 0.005131
+me 0.0020Bcast time 0.004574
+81</code></pre>
+
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Example-Bcast-time">Example Bcast time<a class="anchor-link" href="#Example-Bcast-time">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">mpi4py</span> <span class="k">import</span> <span class="n">MPI</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">comm</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span>
+<span class="n">size</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_size</span><span class="p">()</span>
+<span class="n">rank</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span>
 
 <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">rank</span> <span class="o">*</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)])</span>
+
+<span class="n">comm</span><span class="o">.</span><span class="n">barrier</span><span class="p">();</span>
+
+<span class="n">local_wt</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">Wtime</span><span class="p">();</span>
 <span class="n">comm</span><span class="o">.</span><span class="n">Bcast</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
 <span class="n">local_wt</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">Wtime</span><span class="p">()</span> <span class="o">-</span> <span class="n">local_wt</span><span class="p">;</span>
 
@@ -15535,7 +15614,7 @@ Hoefler and Snir<br/>
 
 </div>
 </div>
-</div></div><div class="fragment">
+</div><div class="fragment">
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -15678,9 +15757,8 @@ Hoefler and Snir<br/>
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Useful-links">Useful links<a class="anchor-link" href="#Useful-links">&#182;</a></h1><h3 id="mpi4py">mpi4py<a class="anchor-link" href="#mpi4py">&#182;</a></h3><ul>
 <li>github: <a href="https://github.com/mpi4py/mpi4py">https://github.com/mpi4py/mpi4py</a></li>
-<li>download and brief tutorial: www.mpi4py.com</li>
-<li>complete tutorial: <a href="https://www.bu.edu/pasi/files/2011/01/Lisandro-Dalcin-mpi4py.pdf">https://www.bu.edu/pasi/files/2011/01/Lisandro-Dalcin-mpi4py.pdf</a>
-<a href="https://buildmedia.readthedocs.org/media/pdf/mpi4py/3.0.0/mpi4py.pdf">https://buildmedia.readthedocs.org/media/pdf/mpi4py/3.0.0/mpi4py.pdf</a></li>
+<li>download and brief tutorial: <a href="https://mpi4py.readthedocs.io/en/stable/">https://mpi4py.readthedocs.io/en/stable/</a></li>
+<li>complete tutorial: <a href="https://buildmedia.readthedocs.org/media/pdf/mpi4py/3.0.0/mpi4py.pdf">https://buildmedia.readthedocs.org/media/pdf/mpi4py/3.0.0/mpi4py.pdf</a></li>
 </ul>
 <p>&nbsp;</p>
 <h3 id="MPI">MPI<a class="anchor-link" href="#MPI">&#182;</a></h3><ul>
@@ -15689,6 +15767,21 @@ Hoefler and Snir<br/>
 </ul>
 <p>&nbsp;</p>
 <div class="box"> For questions: ana.gainaru@vanderbilt.edu </div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Example-1:-Merge-Sort">Example 1: Merge Sort<a class="anchor-link" href="#Example-1:-Merge-Sort">&#182;</a></h1><p><img src="./figures/merge_sort.png" alt="merge sort" align="left" width="400"/></p>
+<ul>
+<li>Divide an unsorted listed into sublists until each sublist contains only one element<ul>
+<li>One element sublists are merged together to produce new sorted sublists</li>
+<li>When there is only one sublist remaining, the list is sorted</li>
+</ul>
+</li>
+</ul>
+
 </div>
 </div>
 </div></section></section>
