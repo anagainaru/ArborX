@@ -15774,13 +15774,10 @@ me 0.0020Bcast time 0.004574
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Example-1:-Merge-Sort">Example 1: Merge Sort<a class="anchor-link" href="#Example-1:-Merge-Sort">&#182;</a></h1><p><img src="./figures/merge_sort.png" alt="merge sort" align="right" width="300"/></p>
-<ul>
-<li>Divide an unsorted listed into sublists<ul>
+<h3 id="Divide-an-unsorted-listed-into-sublists">Divide an unsorted listed into sublists<a class="anchor-link" href="#Divide-an-unsorted-listed-into-sublists">&#182;</a></h3><ul>
 <li>Until each sublist contains only one element</li>
 <li>One element sublists are merged together </li>
 <li>Stop when only one sublist remains</li>
-</ul>
-</li>
 </ul>
 
 </div>
@@ -15797,14 +15794,15 @@ me 0.0020Bcast time 0.004574
 </li>
 </ul>
 <p>&nbsp;</p>
-<div class="box">  The number of processes is a power of two so that all processes are doing roughly the same amount of work </div><h3 id="TODO-at-home:-chnge-the-code-to-work-with-non-power-of-two-processes">TODO at home: chnge the code to work with non-power of two processes<a class="anchor-link" href="#TODO-at-home:-chnge-the-code-to-work-with-non-power-of-two-processes">&#182;</a></h3>
+<div class="box">  The number of processes is a power of two so that all processes are doing roughly the same amount of work </div><p>&nbsp;</p>
+<h3 id="TODO-at-home:-change-the-code-to-work-with-non-power-of-two-processes">TODO at home: change the code to work with non-power of two processes<a class="anchor-link" href="#TODO-at-home:-change-the-code-to-work-with-non-power-of-two-processes">&#182;</a></h3>
 </div>
 </div>
 </div></section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Part-I:-Divide-list-into-unsorted-sublists">Part I: Divide list into unsorted sublists<a class="anchor-link" href="#Part-I:-Divide-list-into-unsorted-sublists">&#182;</a></h1><p><img src="./figures/merge_sort1.png" alt="merge sort" width="500"/></p>
+<h1 id="Part-1:-Divide-list-into-unsorted-sublists">Part 1: Divide list into unsorted sublists<a class="anchor-link" href="#Part-1:-Divide-list-into-unsorted-sublists">&#182;</a></h1><p><img src="./figures/merge_sort1.png" alt="merge sort" width="500"/></p>
 <ul>
 <li>The list is scattered to all of the processes <ul>
 <li>Each process has an equal chunk of the list</li>
@@ -15812,6 +15810,18 @@ me 0.0020Bcast time 0.004574
 </li>
 </ul>
 <p><cite> Figure shows 4 processes and a list containing 8 integers </cite></p>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Part-2:-Sort-local-sublists">Part 2: Sort local sublists<a class="anchor-link" href="#Part-2:-Sort-local-sublists">&#182;</a></h1><p><img src="./figures/merge_sort1.png" alt="merge sort" width="500"/></p>
+<ul>
+<li>Sequential sort</li>
+</ul>
+<p><img src="./figures/merge_sort2.png" alt="merge sort" width="500"/></p>
 
 </div>
 </div>
