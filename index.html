@@ -15913,13 +15913,21 @@ Rank 2: data [8 9 4 6]</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="./figures/merge_sort1.png" alt="merge sort" align="right" width="200"/></p>
+<p><img src="./figures/merge_sort2.png" alt="merge sort" align="right" width="200"/></p>
 
 <pre><code>Global data [ 1  3 15 12 14  5  7  0  8  9  4  6 13 11  2 10]
 Rank 0: data [1  3 12 15]
 Rank 1: data [0  5  7 14]
-Rank 3: data [2 13 11  2 10]
-Rank 2: data [8 9 4 6]</code></pre>
+Rank 3: data [2 10 11 13]
+Rank 2: data [4  6  8  9]</code></pre>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Part-3:-Merge-sublists">Part 3: Merge sublists<a class="anchor-link" href="#Part-3:-Merge-sublists">&#182;</a></h1><p><small> 3.1. Who to communicate with at every level of the tree? </small></p>
 
 </div>
 </div>
@@ -15929,13 +15937,47 @@ Rank 2: data [8 9 4 6]</code></pre>
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span>    <span class="k">for</span> <span class="n">height</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_height</span><span class="p">):</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">height</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="n">rank</span> <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">height</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="n">parent</span><span class="p">:</span>
+            <span class="n">child</span> <span class="o">=</span> <span class="n">rank</span> <span class="o">|</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">height</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;At height </span><span class="si">%d</span><span class="s2">, rank </span><span class="si">%d</span><span class="s2"> receive from </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">child</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;At height </span><span class="si">%d</span><span class="s2">, rank </span><span class="si">%d</span><span class="s2"> sends to </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">parent</span><span class="p">))</span>
+            <span class="k">break</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="./figures/merge_sort3.png" alt="merge sort" align="right" width="400"/></p>
+
+<pre><code>Tree of hight 3
+At height 0, rank 0 receive from 1
+At height 0, rank 1 sends to 0
+At height 0, rank 2 receive from 3
+At height 0, rank 3 sends to 2
+At height 0, rank 4 receive from 5
+At height 0, rank 5 sends to 4
+At height 0, rank 6 receive from 7
+At height 0, rank 7 sends to 6
+
+At height 1, rank 0 receive from 2
+At height 1, rank 2 sends to 0
+At height 1, rank 4 receive from 6
+At height 1, rank 6 sends to 4
+
+At height 2, rank 0 receive from 4
+At height 2, rank 4 sends to 0</code></pre>
+
+</div>
+</div>
 </div></section></section>
 </div>
 </div>
