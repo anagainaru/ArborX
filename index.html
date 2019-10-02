@@ -15936,14 +15936,14 @@ Rank 2: data [4  6  8  9]</code></pre>
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span>    <span class="k">for</span> <span class="n">height</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_height</span><span class="p">):</span>
-        <span class="n">parent</span> <span class="o">=</span> <span class="n">rank</span> <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">height</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="n">parent</span><span class="p">:</span>
-            <span class="n">child</span> <span class="o">=</span> <span class="n">rank</span> <span class="o">|</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">height</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;At height </span><span class="si">%d</span><span class="s2">, rank </span><span class="si">%d</span><span class="s2"> receive from </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">child</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;At height </span><span class="si">%d</span><span class="s2">, rank </span><span class="si">%d</span><span class="s2"> sends to </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">parent</span><span class="p">))</span>
-            <span class="k">break</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">height</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_height</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">rank</span> <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">height</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="n">parent</span><span class="p">:</span>
+        <span class="n">child</span> <span class="o">=</span> <span class="n">rank</span> <span class="o">|</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">height</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;At height </span><span class="si">%d</span><span class="s2">, rank </span><span class="si">%d</span><span class="s2"> receive from </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">child</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;At height </span><span class="si">%d</span><span class="s2">, rank </span><span class="si">%d</span><span class="s2"> sends to </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">parent</span><span class="p">))</span>
+        <span class="k">break</span>
 </pre></div>
 
     </div>
@@ -15991,19 +15991,17 @@ At height 2, rank 4 sends to 0</code></pre>
 <div class=" highlight hl-ipython3"><pre><span></span>    <span class="k">for</span> <span class="n">height</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_height</span><span class="p">):</span>
         <span class="n">step</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">height</span>
         <span class="n">parent</span> <span class="o">=</span> <span class="n">rank</span> <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">height</span><span class="p">))</span>
+        
         <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="n">parent</span><span class="p">:</span>
             <span class="n">child</span> <span class="o">=</span> <span class="n">rank</span> <span class="o">|</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">height</span><span class="p">)</span>
             <span class="c1"># receive data from the right child</span>
-            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;At height </span><span class="si">%d</span><span class="s2">, rank </span><span class="si">%d</span><span class="s2"> receive from </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">child</span><span class="p">))</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">local_array</span><span class="p">))</span>
             <span class="n">comm</span><span class="o">.</span><span class="n">Recv</span><span class="p">([</span><span class="n">data</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">INT</span><span class="p">],</span> <span class="n">source</span><span class="o">=</span><span class="n">child</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">height</span><span class="p">)</span>
+            
             <span class="c1"># merge the array with your own data</span>
             <span class="n">local_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">merge</span><span class="p">(</span><span class="n">local_array</span><span class="p">,</span> <span class="n">data</span><span class="p">)))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># send your data to the parent</span>
-            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;At height </span><span class="si">%d</span><span class="s2">, rank </span><span class="si">%d</span><span class="s2"> sends to </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">parent</span><span class="p">))</span>
             <span class="n">comm</span><span class="o">.</span><span class="n">Send</span><span class="p">([</span><span class="n">local_array</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">INT</span><span class="p">],</span> <span class="n">dest</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">height</span><span class="p">)</span>
             <span class="k">break</span>
 </pre></div>
