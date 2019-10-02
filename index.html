@@ -15852,7 +15852,7 @@ me 0.0020Bcast time 0.004574
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span>    <span class="n">global_array_size</span> <span class="o">=</span> <span class="n">get_input_data_szie</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span>    <span class="n">global_array_size</span> <span class="o">=</span> <span class="n">get_input_data_size</span><span class="p">()</span>
     <span class="c1"># calculate total height of tree</span>
     <span class="n">height</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
 
@@ -15888,6 +15888,54 @@ Rank 2: data [8 9 4 6]</code></pre>
 
 </div>
 </div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Part-2:-Sort-local-sublists">Part 2: Sort local sublists<a class="anchor-link" href="#Part-2:-Sort-local-sublists">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>    <span class="n">local_data</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Rank </span><span class="si">%d</span><span class="s2">: local data sorted </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">local_data</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="./figures/merge_sort1.png" alt="merge sort" align="right" width="200"/></p>
+
+<pre><code>Global data [ 1  3 15 12 14  5  7  0  8  9  4  6 13 11  2 10]
+Rank 0: data [1  3 12 15]
+Rank 1: data [0  5  7 14]
+Rank 3: data [2 13 11  2 10]
+Rank 2: data [8 9 4 6]</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 </div></section></section>
 </div>
 </div>
