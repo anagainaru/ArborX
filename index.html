@@ -15773,7 +15773,102 @@ me 0.0020Bcast time 0.004574
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Example-1:-Merge-Sort">Example 1: Merge Sort<a class="anchor-link" href="#Example-1:-Merge-Sort">&#182;</a></h1><p>&nbsp;</p>
+<h1 id="Examples">Examples<a class="anchor-link" href="#Examples">&#182;</a></h1>
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Example-1:-Calculating-Pi">Example 1: Calculating Pi<a class="anchor-link" href="#Example-1:-Calculating-Pi">&#182;</a></h1><p><img src="./figures/pi_circle.png" alt="calculating pi"></p>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Monte-Carlo-simualtion">Monte Carlo simualtion<a class="anchor-link" href="#Monte-Carlo-simualtion">&#182;</a></h1><p><img src="./figures/pi_circle.png" alt="pi" align="right" width="200"/></p>
+<p><img src="./figures/Pi_30K.gif" alt="calculating pi"></p>
+<p><small> Image downloaded from: <a href="https://commons.wikimedia.org/wiki/File:Pi_30K.gif">https://commons.wikimedia.org/wiki/File:Pi_30K.gif</a> </small></p>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Example-1:-Calculating-Pi">Example 1: Calculating Pi<a class="anchor-link" href="#Example-1:-Calculating-Pi">&#182;</a></h1><p><img src="./figures/pi.png" alt="pi" align="right" width="300"/></p>
+<ul>
+<li>Calculating pi via numerical integration<ul>
+<li>Divide interval up into subintervals</li>
+<li>Assign subintervals to processes</li>
+<li>Each process calculates partial sum</li>
+<li>Add all the partial sums together to get pi</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Code">Code<a class="anchor-link" href="#Code">&#182;</a></h1><p><cite> For dividing the interval in n slices </cite></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">w</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">n</span>
+<span class="n">mypi</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rank</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+    <span class="n">mypi</span> <span class="o">+=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+<span class="n">pi</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">mypi</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="n">MPI</span><span class="o">.</span><span class="n">SUM</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">rank</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PI: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">pi</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span>ana@webserver:~/mpi_lecture$ mpiexec -n <span class="m">2</span> python3 compute_pi.py <span class="m">10</span>
+PI: <span class="m">2</span>.904518
+ana@webserver:~/mpi_lecture$ mpiexec -n <span class="m">2</span> python3 compute_pi.py <span class="m">100</span>
+PI: <span class="m">3</span>.120417
+ana@webserver:~/mpi_lecture$ mpiexec -n <span class="m">2</span> python3 compute_pi.py <span class="m">1000</span>
+PI: <span class="m">3</span>.139555
+ana@webserver:~/mpi_lecture$ mpiexec -n <span class="m">2</span> python3 compute_pi.py <span class="m">10000</span>
+PI: <span class="m">3</span>.141391
+</pre></div>
+
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Performance">Performance<a class="anchor-link" href="#Performance">&#182;</a></h1>
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Example-2:-Merge-Sort">Example 2: Merge Sort<a class="anchor-link" href="#Example-2:-Merge-Sort">&#182;</a></h1><p>&nbsp;</p>
 <p><img src="./figures/merge_sort.png" alt="merge sort" align="right" width="300"/></p>
 <h3 id="Divide-an-unsorted-listed-into-sublists">Divide an unsorted listed into sublists<a class="anchor-link" href="#Divide-an-unsorted-listed-into-sublists">&#182;</a></h3><ul>
 <li>Until each sublist contains only one element</li>
