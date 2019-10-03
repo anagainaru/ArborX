@@ -15799,14 +15799,12 @@ me 0.0020Bcast time 0.004574
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Example-1:-Calculating-Pi">Example 1: Calculating Pi<a class="anchor-link" href="#Example-1:-Calculating-Pi">&#182;</a></h1><p><img src="./figures/pi.png" alt="pi" align="right" width="300"/></p>
+<p><cite> Calculating pi via numerical integration </cite></p>
 <ul>
-<li>Calculating pi via numerical integration<ul>
 <li>Divide interval up into subintervals</li>
 <li>Assign subintervals to processes</li>
 <li>Each process calculates partial sum</li>
 <li>Add all the partial sums </li>
-</ul>
-</li>
 </ul>
 
 </div>
@@ -16147,6 +16145,182 @@ Sorted array [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Performance">Performance<a class="anchor-link" href="#Performance">&#182;</a></h1>
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Example-3:-Matrix-vector-multiplication">Example 3: Matrix vector multiplication<a class="anchor-link" href="#Example-3:-Matrix-vector-multiplication">&#182;</a></h1><p><img src="./figures/mvm.png" alt="Matrix vector multiplication"></p>
+<p><cite> Dot product between rows and vector </cite></p>
+<ul>
+<li>Easiest way to split the multiplication?</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Split-by-row">Split by row<a class="anchor-link" href="#Split-by-row">&#182;</a></h1><p><img src="./figures/mvm_row.png" alt="mvm" width="400"/></p>
+<ul>
+<li>Each process gets one\multiple rows of <code>A</code><ul>
+<li>Is responsible for one\multiple elements in the <code>res</code> vector</li>
+</ul>
+</li>
+<li>All processes store the <code>vect</code> vector</li>
+</ul>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Split-by-row">Split by row<a class="anchor-link" href="#Split-by-row">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>    <span class="c1"># read data and distribute it to each process</span>
+    <span class="n">my_row_count</span> <span class="o">=</span> <span class="n">number_rows</span> <span class="o">//</span> <span class="n">size</span>
+    <span class="n">local_A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">my_row_count</span><span class="p">,</span> <span class="n">number_rows</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;i&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rank</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">read_matrix</span><span class="p">()</span>
+        <span class="n">vect</span> <span class="o">=</span> <span class="n">read_vector</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Multiply matrix </span><span class="si">%s</span><span class="s2"> with vector </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">vect</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">vect</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">number_rows</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;i&#39;</span><span class="p">)</span>
+
+    <span class="n">comm</span><span class="o">.</span><span class="n">Scatter</span><span class="p">([</span><span class="n">A</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">INT</span><span class="p">],</span> <span class="p">[</span><span class="n">local_A</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">INT</span><span class="p">],</span> <span class="n">root</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">comm</span><span class="o">.</span><span class="n">Bcast</span><span class="p">([</span><span class="n">vect</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">INT</span><span class="p">],</span> <span class="n">root</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;rank </span><span class="si">%d</span><span class="s2">: matrix </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">local_A</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+<pre><code>Multiply matrix 
+[[0 1 2 3]
+ [2 3 4 5]
+ [4 5 6 7]
+ [6 7 8 9]] with vector [0 1 0 1]
+rank 0: matrix 
+    [[0 1 2 3]
+     [2 3 4 5]]
+rank 1: matrix 
+    [[4 5 6 7]
+     [6 7 8 9]]</code></pre>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Split-by-row">Split by row<a class="anchor-link" href="#Split-by-row">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>    <span class="c1"># local computation</span>
+    <span class="n">local_res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">my_row_count</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;i&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">my_row_count</span><span class="p">):</span>
+        <span class="n">local_res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">local_A</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">vect</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;rank </span><span class="si">%d</span><span class="s2">: local result </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">local_res</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+<pre><code>Multiply matrix 
+[[0 1 2 3]
+ [2 3 4 5]
+ [4 5 6 7]
+ [6 7 8 9]] with vector [0 1 0 1]
+rank 0: matrix 
+    [[0 1 2 3]
+     [2 3 4 5]]
+rank 1: matrix 
+    [[4 5 6 7]
+     [6 7 8 9]]
+
+rank 0: local result [4 8]
+rank 1: local result [12 16]</code></pre>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Split-by-row">Split by row<a class="anchor-link" href="#Split-by-row">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>    <span class="n">res</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">size</span> <span class="o">*</span> <span class="n">my_row_count</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;i&#39;</span><span class="p">)</span>
+
+    <span class="n">comm</span><span class="o">.</span><span class="n">Gather</span><span class="p">([</span><span class="n">local_res</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">INT</span><span class="p">],</span> <span class="p">[</span><span class="n">res</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">INT</span><span class="p">],</span> <span class="n">root</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">rank</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Multiplication result </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+<pre><code>Multiply matrix 
+[[0 1 2 3]
+ [2 3 4 5]
+ [4 5 6 7]
+ [6 7 8 9]] with vector [0 1 0 1]
+Multiplication result [ 4  8 12 16]</code></pre>
+<p><cite> What are the limitations? </cite></p>
+
+</div>
+</div>
+</div></div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
 </div>
 </div>
 </div></section></section>
