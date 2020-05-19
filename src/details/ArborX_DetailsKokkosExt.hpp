@@ -126,6 +126,15 @@ KOKKOS_INLINE_FUNCTION bool isFinite(T x)
 #endif
 }
 
+template <typename T>
+KOKKOS_INLINE_FUNCTION float log(T x)
+{
+#ifndef __CUDA_ARCH__
+  using std::log2;
+#endif
+  return log2(x);
+}
+
 namespace ArithmeticTraits
 {
 
