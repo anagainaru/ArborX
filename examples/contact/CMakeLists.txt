@@ -1,0 +1,5 @@
+if(Kokkos_DEVICES MATCHES "CUDA")
+  add_executable(ArborX_SolidMechanics.exe example_solid_mechanics.cpp)
+  target_link_libraries(ArborX_SolidMechanics.exe ${ArborX_TARGET})
+  add_test(NAME ArborX_SolidMechanics_Example COMMAND ./ArborX_SolidMechanics.exe)
+endif()

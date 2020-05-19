@@ -15,3 +15,5 @@ endif()
 add_subdirectory(access_traits)
 
 add_subdirectory(brute_force)
+
+add_subdirectory(contact)
