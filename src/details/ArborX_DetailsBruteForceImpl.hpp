@@ -35,24 +35,54 @@ struct WrappedBF
   void operator()(ExecutionSpace const &space, Predicates const predicates,
                   Callbacks const &callbacks) const
   {
+    using TeamPolicy = Kokkos::TeamPolicy<ExecutionSpace>;
     int const n_primitives = primitives_.extent(0);
-
     using Access =
         ArborX::Traits::Access<Predicates, ArborX::Traits::PredicatesTag>;
     int const n_queries = Access::size(predicates);
+    using PredicateType = decay_result_of_get_t<Access>;
+    using PrimitiveType = typename Primitives::value_type;
+    int const predicates_per_team = 600;
+    int const primitives_per_team = 600;
+
+    int const n_primitive_tiles =
+        ceil((float)n_primitives / primitives_per_team);
+    int const n_predicate_tiles = ceil((float)n_queries / predicates_per_team);
+    int const n_teams = n_primitive_tiles * n_predicate_tiles;
+
+    auto &pbf = primitives_;
 
     Kokkos::parallel_for(
-        ARBORX_MARK_REGION(""),
-        Kokkos::MDRangePolicy<ExecutionSpace, Kokkos::Rank<2>>(
-            space, {{0, 0}}, {{(long)n_queries, (long)n_primitives}}),
-        KOKKOS_LAMBDA(int i, int j) {
-          auto const predicate = Access::get(predicates, i);
-          auto const &primitive = primitives_(j);
-          auto const callback = callbacks(i);
-          if (predicate(primitive))
-          {
-            callback(j);
-          }
+        TeamPolicy((long)n_teams, Kokkos::AUTO),
+        KOKKOS_LAMBDA(const typename TeamPolicy::member_type &teamMember) {
+          int predicate_start = predicates_per_team *
+				teamMember.league_rank() / n_primitive_tiles;
+          int primitive_start = primitives_per_team *
+				(teamMember.league_rank() % n_primitive_tiles);
+
+          int predicates_in_this_team = KokkosExt::min(
+	      predicates_per_team, n_queries - predicate_start);
+          int primitives_in_this_team = KokkosExt::min(
+              primitives_per_team, n_primitives - primitive_start);
+
+          Kokkos::parallel_for(
+              Kokkos::TeamThreadRange(teamMember,
+                                      (long)primitives_in_this_team),
+              [&](const int j) {
+                Kokkos::parallel_for(
+                    Kokkos::ThreadVectorRange(teamMember,
+                                              predicates_in_this_team),
+                    [&](const int q) {
+                      auto const predicate = Access::get(
+                                       predicates, predicate_start + q);
+                      auto const &primitive = pbf(primitive_start + j);
+                      if (predicate(primitive))
+                      {
+                        auto const callback = callbacks(q + predicate_start);
+                        callback(j + primitive_start);
+                      }
+                    });
+              });
         });
   }
 };
