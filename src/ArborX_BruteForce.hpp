@@ -21,7 +21,7 @@
 namespace ArborX
 {
 
-template <typename MemorySpace>
+template <typename MemorySpace, typename Enable = void>
 class BruteForce
 {
 public:
@@ -72,6 +72,28 @@ private:
   Kokkos::View<bounding_volume_type *, memory_space> _bounding_volumes;
 };
 
+template <typename DeviceType>
+class BruteForce<
+    DeviceType, std::enable_if_t<Kokkos::is_device<DeviceType>::value>>
+    : public BruteForce<typename DeviceType::memory_space>
+{
+public:
+  using device_type = DeviceType;
+  BruteForce() = default;
+  template <typename Primitives>
+  BruteForce(Primitives const &primitives)
+      : BruteForce<typename DeviceType::memory_space>(
+            typename DeviceType::execution_space{}, primitives)
+  {
+  }
+  template <typename... Args>
+  void query(Args &&... args) const
+  {
+    BruteForce<typename DeviceType::memory_space>::query(
+        typename DeviceType::execution_space{}, std::forward<Args>(args)...);
+  }
+};
+
 namespace Details
 {
 // NOTE  Working around the fact that CUDA does not allow the use of lambdas in
@@ -97,9 +119,9 @@ void initializeBoundingVolumes(ExecutionSpace const &space,
 }
 } // namespace Details
 
-template <typename MemorySpace>
+template <typename MemorySpace, typename Enable>
 template <typename ExecutionSpace, typename Primitives>
-BruteForce<MemorySpace>::BruteForce(ExecutionSpace const &space,
+BruteForce<MemorySpace, Enable>::BruteForce(ExecutionSpace const &space,
                                     Primitives const &primitives)
     : _size{Traits::Access<Primitives, Traits::PrimitivesTag>::size(primitives)}
     , _bounding_volumes{
@@ -118,5 +140,6 @@ BruteForce<MemorySpace>::BruteForce(ExecutionSpace const &space,
 }
 
 } // namespace ArborX
+
 
 #endif
