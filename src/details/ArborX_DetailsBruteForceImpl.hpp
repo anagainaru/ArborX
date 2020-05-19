@@ -42,18 +42,30 @@ struct WrappedBF
     int const n_queries = Access::size(predicates);
     using PredicateType = decay_result_of_get_t<Access>;
     using PrimitiveType = typename Primitives::value_type;
-    int const predicates_per_team = 600;
-    int const primitives_per_team = 600;
+    int max_scratch_size = TeamPolicy::scratch_size_max(0) / 2;
+    int const predicates_per_team = max_scratch_size / sizeof(PredicateType);
+    int const primitives_per_team = max_scratch_size / sizeof(PrimitiveType);
 
     int const n_primitive_tiles =
         ceil((float)n_primitives / primitives_per_team);
     int const n_predicate_tiles = ceil((float)n_queries / predicates_per_team);
     int const n_teams = n_primitive_tiles * n_predicate_tiles;
 
+    using ScratchPredicateType =
+        Kokkos::View<PredicateType *,
+                     typename ExecutionSpace::scratch_memory_space,
+                     Kokkos::MemoryTraits<Kokkos::Unmanaged>>;
+    using ScratchPrimitiveType =
+        Kokkos::View<PrimitiveType *,
+                     typename ExecutionSpace::scratch_memory_space,
+                     Kokkos::MemoryTraits<Kokkos::Unmanaged>>;
+    int scratch_size = ScratchPredicateType::shmem_size(predicates_per_team) +
+        	       ScratchPrimitiveType::shmem_size(primitives_per_team);
     auto &pbf = primitives_;
 
     Kokkos::parallel_for(
-        TeamPolicy((long)n_teams, Kokkos::AUTO),
+        TeamPolicy((long)n_teams, Kokkos::AUTO)
+            .set_scratch_size(0, Kokkos::PerTeam(scratch_size)),
         KOKKOS_LAMBDA(const typename TeamPolicy::member_type &teamMember) {
           int predicate_start = predicates_per_team *
 				teamMember.league_rank() / n_primitive_tiles;
@@ -65,6 +77,27 @@ struct WrappedBF
           int primitives_in_this_team = KokkosExt::min(
               primitives_per_team, n_primitives - primitive_start);
 
+          ScratchPredicateType scratch_predicates(teamMember.team_scratch(0),
+                                                  predicates_per_team);
+          ScratchPrimitiveType scratch_primitives(teamMember.team_scratch(0),
+                                                  primitives_per_team);
+          if (teamMember.team_rank() == 0)
+          {
+            Kokkos::parallel_for(Kokkos::ThreadVectorRange(
+                                     teamMember, (long)predicates_in_this_team),
+                                 [&](const int q) {
+                                   scratch_predicates(q) = Access::get(
+                                       predicates, predicate_start + q);
+                                 });
+            Kokkos::parallel_for(Kokkos::ThreadVectorRange(
+                                     teamMember, (long)primitives_in_this_team),
+                                 [&](const int j) {
+                                   scratch_primitives(j) =
+                                       pbf(primitive_start + j);
+                                 });
+          }
+          teamMember.team_barrier();
+
           Kokkos::parallel_for(
               Kokkos::TeamThreadRange(teamMember,
                                       (long)primitives_in_this_team),
@@ -73,9 +106,8 @@ struct WrappedBF
                     Kokkos::ThreadVectorRange(teamMember,
                                               predicates_in_this_team),
                     [&](const int q) {
-                      auto const predicate = Access::get(
-                                       predicates, predicate_start + q);
-                      auto const &primitive = pbf(primitive_start + j);
+                      auto const predicate = scratch_predicates(q);
+                      auto const &primitive = scratch_primitives(j);
                       if (predicate(primitive))
                       {
                         auto const callback = callbacks(q + predicate_start);
